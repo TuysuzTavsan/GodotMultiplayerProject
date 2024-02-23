@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://blaieaqp413k7"]
+
+[ext_resource type="Script" path="res://addons/terrain_3d/tools/importer.gd" id="1_60b8f"]
+[ext_resource type="Terrain3DStorage" uid="uid://cii455pry0rjn" path="res://Resources/terrainStorage.res" id="1_w1q85"]
+[ext_resource type="Terrain3DMaterial" uid="uid://p6oxknpa6xyf" path="res://Resources/terrainMaterial.tres" id="2_g2ibd"]
+[ext_resource type="Terrain3DTextureList" uid="uid://tgt5cngm5ryb" path="res://Resources/terrainTextureList.tres" id="3_na86a"]
+
+[node name="Importer" type="Terrain3D"]
+storage = ExtResource("1_w1q85")
+material = ExtResource("2_g2ibd")
+texture_list = ExtResource("3_na86a")
+script = ExtResource("1_60b8f")
+height_file_name = "C:/Users/fatma/Desktop/Terrain003_4K.exr"
+import_scale = 500.0
+r16_size = Vector2i(1, 1)

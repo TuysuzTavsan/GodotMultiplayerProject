@@ -1,0 +1,46 @@
+[gd_scene load_steps=11 format=3 uid="uid://d24smqy6jegh3"]
+
+[ext_resource type="Texture2D" uid="uid://b2gib2ycmpe6y" path="res://Resources/kloppenheim_06_puresky_4k.exr" id="1_3bjc5"]
+[ext_resource type="Terrain3DStorage" uid="uid://cii455pry0rjn" path="res://Resources/terrainStorage.res" id="2_kn1wk"]
+[ext_resource type="Terrain3DMaterial" uid="uid://p6oxknpa6xyf" path="res://Resources/terrainMaterial.tres" id="3_s31vp"]
+[ext_resource type="Terrain3DTextureList" uid="uid://tgt5cngm5ryb" path="res://Resources/terrainTextureList.tres" id="4_pui4t"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_kfu8x"]
+panorama = ExtResource("1_3bjc5")
+
+[sub_resource type="Sky" id="Sky_nkd7d"]
+sky_material = SubResource("PanoramaSkyMaterial_kfu8x")
+
+[sub_resource type="Environment" id="Environment_2mnd1"]
+background_mode = 2
+background_energy_multiplier = 0.5
+sky = SubResource("Sky_nkd7d")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_saoiu"]
+albedo_color = Color(0.4, 0.564706, 0.921569, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ba4ch"]
+material = SubResource("StandardMaterial3D_saoiu")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xq6ki"]
+
+[node name="playZone" type="Node"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2mnd1")
+
+[node name="Terrain3D" type="Terrain3D" parent="."]
+storage = ExtResource("2_kn1wk")
+material = ExtResource("3_s31vp")
+texture_list = ExtResource("4_pui4t")
+mesh_lods = 10
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 818.046, 296.3, 2044.93)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 268.301, 54.8902, 18.7262)
+mesh = SubResource("CapsuleMesh_ba4ch")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_xq6ki")
