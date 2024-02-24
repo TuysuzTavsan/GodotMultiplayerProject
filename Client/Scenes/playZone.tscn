@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://d24smqy6jegh3"]
+[gd_scene load_steps=12 format=3 uid="uid://d24smqy6jegh3"]
 
 [ext_resource type="Texture2D" uid="uid://b2gib2ycmpe6y" path="res://Resources/kloppenheim_06_puresky_4k.exr" id="1_3bjc5"]
 [ext_resource type="Terrain3DStorage" uid="uid://cii455pry0rjn" path="res://Resources/terrainStorage.res" id="2_kn1wk"]
 [ext_resource type="Terrain3DMaterial" uid="uid://p6oxknpa6xyf" path="res://Resources/terrainMaterial.tres" id="3_s31vp"]
 [ext_resource type="Terrain3DTextureList" uid="uid://tgt5cngm5ryb" path="res://Resources/terrainTextureList.tres" id="4_pui4t"]
+[ext_resource type="Script" path="res://Src/player.gd" id="5_4um5w"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_kfu8x"]
 panorama = ExtResource("1_3bjc5")
@@ -36,11 +37,16 @@ texture_list = ExtResource("4_pui4t")
 mesh_lods = 10
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 818.046, 296.3, 2044.93)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1096.05, 350.828, 2038.93)
+script = ExtResource("5_4um5w")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 268.301, 54.8902, 18.7262)
 mesh = SubResource("CapsuleMesh_ba4ch")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 shape = SubResource("CapsuleShape3D_xq6ki")
+
+[node name="cameraPoint" type="Node3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.279144, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/cameraPoint"]
