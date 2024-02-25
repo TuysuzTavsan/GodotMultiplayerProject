@@ -17,6 +17,10 @@ public:
 	//copy assignment is deleted
 	Host& operator=(const Host&) = delete;
 
+	//Poll and manage events.
+	void PollEvents();
+
+
 private:
 
 	ENetAddress m_address;

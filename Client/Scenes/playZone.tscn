@@ -25,6 +25,7 @@ fog_sky_affect = 0.62
 size = Vector3(100, 0, 100)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eyuna"]
+cull_mode = 2
 albedo_color = Color(0.752941, 0.752941, 0.752941, 1)
 albedo_texture = ExtResource("2_tmv51")
 metallic = 0.5

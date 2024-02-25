@@ -15,7 +15,6 @@ func _ready():
 		
 	multiplayer.multiplayer_peer = client
 	print("Succesfully created client.")
-	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
