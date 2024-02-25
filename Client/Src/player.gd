@@ -1,51 +1,82 @@
 extends CharacterBody3D
 
-
-const SPEED = 5.0
+@onready var camera  : Camera3D= $cameraPivot/Camera3D
+@onready var cameraPivot : Node3D = $cameraPivot
+const WALK_SPEED = 4.0
+const SPRINT_SPEED = 8.0
 const JUMP_VELOCITY = 4.5
+const GRAVITY = 9.8
+const BOBFREQ = 2.0
+const BOBAMP = 0.08
+const BASE_FOV = 75.0
+const FOV_CHANGE = 1.5
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var bob = 0
+var rotX : float = 0.0
+var rotY : float = 0.0
 
-@onready var camera = $cameraPoint/Camera3D
-@onready var camera_point = $cameraPoint
+
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+func _unhandled_input(event):
+	if event is InputEventMouseMotion:
+		rotX -= event.relative.x * 0.001
+		rotY -= event.relative.y * 0.001
+		rotY = clamp(rotY, deg_to_rad(-75), deg_to_rad(80))
+		basis = Basis() #Reset rotation of characterbody.
+		cameraPivot.basis = Basis() #Reset rotation of camera
+		rotate_object_local(Vector3(0, 1, 0), rotX) # first rotate in Y
+		cameraPivot.rotate_object_local(Vector3(1, 0, 0), rotY) # first rotate in X
+	
+	
+	if event is InputEventKey:
+		if event.pressed and event.keycode == KEY_ESCAPE:
+			get_tree().quit(0);
+		
 
 
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
-		velocity.y -= gravity * delta
+		velocity.y -= GRAVITY * delta
 
 	# Handle jump.
 	if Input.is_action_just_pressed("move_jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
+	
+	
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-	var direction = (camera_point.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var speed : float = WALK_SPEED
+	
+	if Input.is_action_pressed("sprint"):
+		speed = SPRINT_SPEED
+	
+	if is_on_floor():
+		if direction:
+			velocity.x = direction.x * speed
+			velocity.z = direction.z * speed
+		else:
+			velocity.x = lerp(velocity.x, direction.x * speed, delta * 7.0)
+			velocity.z = lerp(velocity.z, direction.z * speed, delta * 7.0)
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-
+		velocity.x = lerp(velocity.x, direction.x * speed, delta * 3.0)
+		velocity.z = lerp(velocity.z, direction.z * speed, delta * 3.0)
+	
+	bob += delta * velocity.length() * float(is_on_floor())
+	cameraPivot.transform.origin = headbob(bob)
+	
+	var velocityClamped = clamp(velocity.length(), 0.5, speed * 2)
+	var targetFov = BASE_FOV + FOV_CHANGE * velocityClamped
+	camera.fov = lerp(camera.fov, targetFov, delta * 8)
+	
 	move_and_slide()
 
 
-
-func _input(event):
-	if event == InputEventMouseButton:
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	elif event.is_action_pressed("ui_cancel"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	
-	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		if event is InputEventMouseMotion:
-			camera_point.rotate_y(-event.relative.x * 0.01)
-			camera.rotate_x(-event.relative.y * 0.01)
-			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-30), deg_to_rad(60))
+func headbob(time) -> Vector3:
+	var pos = Vector3.ZERO
+	pos.y = sin(time * BOBFREQ) * BOBAMP
+	pos.x = cos(time * BOBFREQ / 2) * BOBAMP
+	return pos

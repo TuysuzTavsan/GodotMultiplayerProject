@@ -1,52 +1,85 @@
-[gd_scene load_steps=12 format=3 uid="uid://d24smqy6jegh3"]
+[gd_scene load_steps=18 format=3 uid="uid://diac80koytkwb"]
 
-[ext_resource type="Texture2D" uid="uid://b2gib2ycmpe6y" path="res://Resources/kloppenheim_06_puresky_4k.exr" id="1_3bjc5"]
-[ext_resource type="Terrain3DStorage" uid="uid://cii455pry0rjn" path="res://Resources/terrainStorage.res" id="2_kn1wk"]
-[ext_resource type="Terrain3DMaterial" uid="uid://p6oxknpa6xyf" path="res://Resources/terrainMaterial.tres" id="3_s31vp"]
-[ext_resource type="Terrain3DTextureList" uid="uid://tgt5cngm5ryb" path="res://Resources/terrainTextureList.tres" id="4_pui4t"]
-[ext_resource type="Script" path="res://Src/player.gd" id="5_4um5w"]
+[ext_resource type="Texture2D" uid="uid://b2gib2ycmpe6y" path="res://Resources/kloppenheim_06_puresky_4k.exr" id="1_lg2hn"]
+[ext_resource type="Texture2D" uid="uid://y8lyn2jevn2q" path="res://addons/kenney_prototype_textures/dark/texture_04.png" id="2_tmv51"]
+[ext_resource type="PackedScene" uid="uid://nqxqm4bimr7y" path="res://Scenes/player.tscn" id="3_i6ys3"]
+[ext_resource type="Texture2D" uid="uid://dmcoi5e05258g" path="res://addons/kenney_prototype_textures/orange/texture_04.png" id="4_3ak3k"]
+[ext_resource type="Texture2D" uid="uid://cv6tylmm1nj17" path="res://addons/kenney_prototype_textures/green/texture_04.png" id="5_vxjya"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_kfu8x"]
-panorama = ExtResource("1_3bjc5")
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_bjvds"]
+panorama = ExtResource("1_lg2hn")
 
-[sub_resource type="Sky" id="Sky_nkd7d"]
-sky_material = SubResource("PanoramaSkyMaterial_kfu8x")
+[sub_resource type="Sky" id="Sky_cdr3s"]
+sky_material = SubResource("PanoramaSkyMaterial_bjvds")
 
-[sub_resource type="Environment" id="Environment_2mnd1"]
+[sub_resource type="Environment" id="Environment_ju7gh"]
 background_mode = 2
-background_energy_multiplier = 0.5
-sky = SubResource("Sky_nkd7d")
+background_color = Color(0.941176, 0, 0.247059, 1)
+background_energy_multiplier = 0.75
+sky = SubResource("Sky_cdr3s")
+ambient_light_source = 3
+reflected_light_source = 2
+fog_sky_affect = 0.62
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_saoiu"]
-albedo_color = Color(0.4, 0.564706, 0.921569, 1)
+[sub_resource type="BoxShape3D" id="BoxShape3D_ic8qh"]
+size = Vector3(100, 0, 100)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_ba4ch"]
-material = SubResource("StandardMaterial3D_saoiu")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eyuna"]
+albedo_color = Color(0.752941, 0.752941, 0.752941, 1)
+albedo_texture = ExtResource("2_tmv51")
+metallic = 0.5
+uv1_scale = Vector3(50, 50, 50)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xq6ki"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_bx37r"]
+material = SubResource("StandardMaterial3D_eyuna")
+size = Vector2(100, 100)
 
-[node name="playZone" type="Node"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_2u3hx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rv6xb"]
+albedo_texture = ExtResource("4_3ak3k")
+
+[sub_resource type="BoxMesh" id="BoxMesh_604jl"]
+material = SubResource("StandardMaterial3D_rv6xb")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hwwv3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rge2n"]
+albedo_texture = ExtResource("5_vxjya")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_s7qo1"]
+material = SubResource("StandardMaterial3D_rge2n")
+
+[node name="PlayZone" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_2mnd1")
+environment = SubResource("Environment_ju7gh")
 
-[node name="Terrain3D" type="Terrain3D" parent="."]
-storage = ExtResource("2_kn1wk")
-material = ExtResource("3_s31vp")
-texture_list = ExtResource("4_pui4t")
-mesh_lods = 10
+[node name="Plane" type="StaticBody3D" parent="."]
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1096.05, 350.828, 2038.93)
-script = ExtResource("5_4um5w")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plane"]
+shape = SubResource("BoxShape3D_ic8qh")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
-mesh = SubResource("CapsuleMesh_ba4ch")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plane"]
+mesh = SubResource("PlaneMesh_bx37r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-shape = SubResource("CapsuleShape3D_xq6ki")
+[node name="player" parent="." instance=ExtResource("3_i6ys3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="cameraPoint" type="Node3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.279144, 0)
+[node name="Box" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.6402, 0.57215, 0)
 
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/cameraPoint"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box"]
+shape = SubResource("BoxShape3D_2u3hx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box"]
+mesh = SubResource("BoxMesh_604jl")
+
+[node name="Box2" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.64021, 0.57215, -7)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box2"]
+shape = SubResource("CylinderShape3D_hwwv3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box2"]
+mesh = SubResource("CylinderMesh_s7qo1")
