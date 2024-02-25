@@ -1,13 +1,12 @@
 #include <iostream>
 #include <cstdint>
+#include <servInfo.h>
 #include <enet/enet.h>
 
-const std::uint8_t MAX_CLIENTS = 16;
-const std::uint8_t CHANNELS = 2;
-const std::uint16_t PORT = 9999;
 
-int main()
+int main33()
 {
+    using namespace servinfo;
     int success = enet_initialize();
     if (success < 0)
     {
