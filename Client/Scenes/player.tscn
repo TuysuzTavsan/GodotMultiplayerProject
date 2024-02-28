@@ -1,21 +1,31 @@
-[gd_scene load_steps=4 format=3 uid="uid://nqxqm4bimr7y"]
+[gd_scene load_steps=6 format=3 uid="uid://nqxqm4bimr7y"]
 
 [ext_resource type="Script" path="res://Src/player.gd" id="1_5i2e0"]
+[ext_resource type="Texture2D" uid="uid://cf1akr7xshd82" path="res://Resources/kenney_prototype_textures/red/texture_09.png" id="2_v86dy"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sbkki"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_iapvv"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_lws4k"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2c4yu"]
+albedo_texture = ExtResource("2_v86dy")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6kxn4"]
+material = SubResource("StandardMaterial3D_2c4yu")
 
 [node name="player" type="CharacterBody3D"]
+collision_mask = 3
+platform_on_leave = 2
+platform_floor_layers = 4294901762
+platform_wall_layers = 1
 script = ExtResource("1_5i2e0")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_sbkki")
+shape = SubResource("CapsuleShape3D_iapvv")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("CapsuleMesh_lws4k")
+mesh = SubResource("CapsuleMesh_6kxn4")
 
 [node name="cameraPivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="Camera3D" type="Camera3D" parent="cameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10062, 2.88783)

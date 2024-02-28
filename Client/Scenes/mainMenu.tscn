@@ -1,0 +1,88 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddf1kemwahljf"]
+
+[ext_resource type="Script" path="res://Src/mainMenu.gd" id="1_dubss"]
+[ext_resource type="StyleBox" uid="uid://dvs4ap0mdc3ut" path="res://Resources/button-normal.tres" id="1_j5u4p"]
+[ext_resource type="StyleBox" uid="uid://b3fs8writruqt" path="res://Resources/button-hover.tres" id="2_kkenb"]
+[ext_resource type="StyleBox" uid="uid://cku7nkflrk7k4" path="res://Resources/button-pressed.tres" id="3_6w87x"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dubss")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.099986, 0.099986, 0.099986, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = 96.0
+offset_right = -64.0
+offset_bottom = -104.0
+
+[node name="Title" type="Label" parent="MarginContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(1, 0.54902, 0.317647, 1)
+theme_override_font_sizes/font_size = 32
+text = "Godot Multiplayer Project"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(300, 175)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="Connect To Server" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 5
+theme_override_styles/normal = ExtResource("1_j5u4p")
+theme_override_styles/hover = ExtResource("2_kkenb")
+theme_override_styles/pressed = ExtResource("3_6w87x")
+text = "Connect To Server"
+
+[node name="SettingsButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 4
+theme_override_styles/normal = ExtResource("1_j5u4p")
+theme_override_styles/hover = ExtResource("2_kkenb")
+theme_override_styles/pressed = ExtResource("3_6w87x")
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 4
+theme_override_styles/normal = ExtResource("1_j5u4p")
+theme_override_styles/hover = ExtResource("2_kkenb")
+theme_override_styles/pressed = ExtResource("3_6w87x")
+text = "Quit"
+
+[node name="PlaygroundButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 4
+theme_override_styles/normal = ExtResource("1_j5u4p")
+theme_override_styles/hover = ExtResource("2_kkenb")
+theme_override_styles/pressed = ExtResource("3_6w87x")
+text = "Go to Playground"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/PlaygroundButton" to="." method="_on_playground_button_pressed"]

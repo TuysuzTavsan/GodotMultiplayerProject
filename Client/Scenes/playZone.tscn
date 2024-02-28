@@ -1,10 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://diac80koytkwb"]
+[gd_scene load_steps=21 format=3 uid="uid://diac80koytkwb"]
 
 [ext_resource type="Texture2D" uid="uid://b2gib2ycmpe6y" path="res://Resources/kloppenheim_06_puresky_4k.exr" id="1_lg2hn"]
-[ext_resource type="Texture2D" uid="uid://y8lyn2jevn2q" path="res://addons/kenney_prototype_textures/dark/texture_04.png" id="2_tmv51"]
+[ext_resource type="Texture2D" uid="uid://y8lyn2jevn2q" path="res://Resources/kenney_prototype_textures/dark/texture_04.png" id="2_tmv51"]
 [ext_resource type="PackedScene" uid="uid://nqxqm4bimr7y" path="res://Scenes/player.tscn" id="3_i6ys3"]
-[ext_resource type="Texture2D" uid="uid://dmcoi5e05258g" path="res://addons/kenney_prototype_textures/orange/texture_04.png" id="4_3ak3k"]
-[ext_resource type="Texture2D" uid="uid://cv6tylmm1nj17" path="res://addons/kenney_prototype_textures/green/texture_04.png" id="5_vxjya"]
+[ext_resource type="Texture2D" uid="uid://dmcoi5e05258g" path="res://Resources/kenney_prototype_textures/orange/texture_04.png" id="4_3ak3k"]
+[ext_resource type="Texture2D" uid="uid://cv6tylmm1nj17" path="res://Resources/kenney_prototype_textures/green/texture_04.png" id="5_vxjya"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_bjvds"]
 panorama = ExtResource("1_lg2hn")
@@ -21,8 +21,11 @@ ambient_light_source = 3
 reflected_light_source = 2
 fog_sky_affect = 0.62
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ic8qh"]
-size = Vector3(100, 0, 100)
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_juxex"]
+rough = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1lyvt"]
+size = Vector3(100, 0.1, 100)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eyuna"]
 cull_mode = 2
@@ -35,7 +38,11 @@ uv1_scale = Vector3(50, 50, 50)
 material = SubResource("StandardMaterial3D_eyuna")
 size = Vector2(100, 100)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_2u3hx"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k6nm3"]
+rough = true
+bounce = 0.13
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u8p7y"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rv6xb"]
 albedo_texture = ExtResource("4_3ak3k")
@@ -43,7 +50,10 @@ albedo_texture = ExtResource("4_3ak3k")
 [sub_resource type="BoxMesh" id="BoxMesh_604jl"]
 material = SubResource("StandardMaterial3D_rv6xb")
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_hwwv3"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_e0no3"]
+bounce = 0.14
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_kv3ek"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rge2n"]
 albedo_texture = ExtResource("5_vxjya")
@@ -57,9 +67,12 @@ material = SubResource("StandardMaterial3D_rge2n")
 environment = SubResource("Environment_ju7gh")
 
 [node name="Plane" type="StaticBody3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+physics_material_override = SubResource("PhysicsMaterial_juxex")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Plane"]
-shape = SubResource("BoxShape3D_ic8qh")
+shape = SubResource("BoxShape3D_1lyvt")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Plane"]
 mesh = SubResource("PlaneMesh_bx37r")
@@ -68,19 +81,30 @@ mesh = SubResource("PlaneMesh_bx37r")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="Box" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.6402, 0.57215, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.6402, 1.57215, 0)
+collision_mask = 3
+mass = 50.0
+physics_material_override = SubResource("PhysicsMaterial_k6nm3")
+can_sleep = false
+freeze_mode = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Box"]
-shape = SubResource("BoxShape3D_2u3hx")
+shape = SubResource("BoxShape3D_u8p7y")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Box"]
 mesh = SubResource("BoxMesh_604jl")
 
 [node name="Box2" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.64021, 0.57215, -7)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.64021, 1.57215, -7)
+collision_layer = 2
+collision_mask = 3
+mass = 35.0
+physics_material_override = SubResource("PhysicsMaterial_e0no3")
+can_sleep = false
+freeze_mode = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Box2"]
-shape = SubResource("CylinderShape3D_hwwv3")
+shape = SubResource("CylinderShape3D_kv3ek")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Box2"]
 mesh = SubResource("CylinderMesh_s7qo1")

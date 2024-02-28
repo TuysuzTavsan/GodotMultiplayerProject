@@ -50,6 +50,10 @@ void Host::PollEvents()
             printf("A new client connected from %x:%u.\n",
                 _event.peer->address.host,
                 _event.peer->address.port);
+
+            //TODO: 
+
+
             /* Store any relevant client information here. */
             _event.peer->data = reinterpret_cast<void*>(*"Client information");
             continue;
@@ -60,6 +64,9 @@ void Host::PollEvents()
                 (_event.packet->data),
                 reinterpret_cast<char*>(_event.peer->data),
                 _event.channelID);
+
+            //TODO: Parse message and redirect it to the responsible struct.
+
             /* Clean up the packet now that we're done using it. */
             enet_packet_destroy(_event.packet);
             continue;

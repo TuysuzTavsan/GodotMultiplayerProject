@@ -3,7 +3,8 @@
 #include <enet/enet.h>
 
 /*
-Host is responsible from constantly polling and distributing server events such as: Peer connected, peer disconnected, data received. 
+Host is responsible from constantly polling and distributing server events such as:
+Peer connected, peer disconnected, data received.
 */
 class Host {
 public:

@@ -10,6 +10,7 @@ const BOBFREQ = 2.0
 const BOBAMP = 0.08
 const BASE_FOV = 75.0
 const FOV_CHANGE = 1.5
+const PUSH_FORCE = 80.0
 
 var bob = 0
 var rotX : float = 0.0
@@ -73,6 +74,11 @@ func _physics_process(delta):
 	camera.fov = lerp(camera.fov, targetFov, delta * 8)
 	
 	move_and_slide()
+	
+	for i in get_slide_collision_count():
+		var c : KinematicCollision3D = get_slide_collision(i)
+		if c.get_collider() is RigidBody3D:
+			c.get_collider().apply_central_impulse(-c.get_normal() * PUSH_FORCE)
 
 
 func headbob(time) -> Vector3:

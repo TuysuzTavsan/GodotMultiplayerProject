@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="Client"
-run/main_scene="res://Scenes/playZone.tscn"
+run/main_scene="res://Scenes/mainMenu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Client="*res://Src/client.gd"
+SceneLoader="*res://Src/sceneLoader.gd"
 
 [editor_plugins]
 
@@ -71,6 +72,12 @@ sprint={
 ]
 }
 
+[physics]
+
+3d/physics_engine="JoltPhysics3D"
+
 [rendering]
 
+textures/canvas_textures/default_texture_filter=3
 anti_aliasing/quality/msaa_3d=1
+vrs/canvas_textures/default_texture_filter=1
