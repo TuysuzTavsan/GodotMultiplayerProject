@@ -1,40 +1,19 @@
-#include <libHandler.h>
-#include <host.h>
-#include <thread>
-#include <iostream>
+#include <application.h>
 
-void controlApp(bool& flag)
-{
-	char input = 0;
-	std::cin >> input;
-
-	if (input == 'q')
-	{
-		flag = false;
-	}
-}
 
 int main()
 {
-	if (!LibHandler::Init())
+	Application app;
+
+	if (!app.Init())
 	{
 		return -1;
 	}
 
-	Host mhost;
-	
-	bool run = true;
+	app.Run();
 
-	std::thread controlthrdd(controlApp, std::ref(run));
+	app.Terminate();
 
-	while (run)
-	{
-		mhost.PollEvents();
-	}
-
-
-	LibHandler::DeInit();
-	controlthrdd.join();
 
 	return 0;
 }

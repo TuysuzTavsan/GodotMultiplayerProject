@@ -110,7 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Include;$(SolutionDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -129,7 +129,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Include;$(SolutionDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -142,12 +142,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="Src\application.cpp" />
+    <ClCompile Include="Src\clientDistributor.cpp" />
     <ClCompile Include="Src\host.cpp" />
     <ClCompile Include="Src\libHandler.cpp" />
     <ClCompile Include="Src\main.cpp" />
+    <ClCompile Include="Src\server.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\application.h" />
+    <ClInclude Include="Include\clientDistributor.h" />
+    <ClInclude Include="Include\safeVector.h" />
     <ClInclude Include="Include\connectionManager.h" />
     <ClInclude Include="Include\host.h" />
     <ClInclude Include="Include\libHandler.h" />

@@ -1,0 +1,20 @@
+
+How will server work?
+
+Host is the master class that will poll every client event.
+There are 4 types of events in ENetLibrary.
+ENET_EVENT_TYPE_NONE
+ENET_EVENT_TYPE_CONNECT
+ENET_EVENT_TYPE_RECEIVE
+ENET_EVENT_TYPE_DISCONNECT
+
+Connect and Disconnect will be handled by the clientDistributor.
+It will hold every valid client connection in its private containers.
+
+On the event receive messageDistributor will distribute messages based on MessageProtocol.
+Example: Physics related messages will be parsed out from the message and directed to the desired handler. Same will be applied to lobby messages... etc.
+
+
+
+LobbyHandler
+GameSessionHandler

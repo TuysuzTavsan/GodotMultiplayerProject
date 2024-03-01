@@ -5,6 +5,18 @@
 
 Host::Host()
 {
+
+}
+
+Host::~Host()
+{
+    //log and destroy host.
+    std::cout << "[Destroying host...]\n";
+    enet_host_destroy(m_server);
+}
+
+void Host::CreateServer()
+{
     /* Create host connection. */
 
     std::cout << "[Creating host...]\n";
@@ -26,15 +38,8 @@ Host::Host()
     }
 
     //log success.
-    std::cout << "[Success] Host created on Port: " << (unsigned)servinfo::PORT << " with MaxClientCount: " 
+    std::cout << "[Success] Host created on Port: " << (unsigned)servinfo::PORT << " with MaxClientCount: "
         << (unsigned)servinfo::MAX_CLIENTS << " with " << (unsigned)servinfo::CHANNELS << " channels.\n";
-}
-
-Host::~Host()
-{
-    //log and destroy host.
-    std::cout << "[Destroying host...]\n";
-    enet_host_destroy(m_server);
 }
 
 void Host::PollEvents()
@@ -51,8 +56,9 @@ void Host::PollEvents()
                 _event.peer->address.host,
                 _event.peer->address.port);
 
-            //TODO: 
-
+            //TODO:
+            //Have a generic peer pool.
+            m_distributor.AddFreshPeer(_event.peer);
 
             /* Store any relevant client information here. */
             _event.peer->data = reinterpret_cast<void*>(*"Client information");
@@ -76,6 +82,9 @@ void Host::PollEvents()
             std::cout << _event.peer->connectID << " disconnected.\n";
             /* Reset the peer's client information. */
             _event.peer->data = NULL;
+
+            m_distributor.RemoveDisconnectedPeer(_event.peer);
+
             continue;
         }
     }

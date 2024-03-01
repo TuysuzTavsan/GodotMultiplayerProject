@@ -1,6 +1,8 @@
 #pragma once
 
 #include <enet/enet.h>
+#include <safeVector.h>
+#include <clientDistributor.h>
 
 /*
 Host is responsible from constantly polling and distributing server events such as:
@@ -18,6 +20,8 @@ public:
 	//copy assignment is deleted
 	Host& operator=(const Host&) = delete;
 
+	void CreateServer();
+
 	//Poll and manage events.
 	void PollEvents();
 
@@ -26,4 +30,5 @@ private:
 
 	ENetAddress m_address;
 	ENetHost* m_server;
+	ClientDistributor m_distributor;
 };
