@@ -21,7 +21,7 @@ bool Application::Init()
 {
 	if (!LibHandler::Init())
 	{
-		return -1;
+		return false;
 	}
 
 	m_host.CreateServer();

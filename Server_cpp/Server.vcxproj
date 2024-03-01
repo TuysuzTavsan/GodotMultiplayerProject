@@ -147,7 +147,6 @@
     <ClCompile Include="Src\host.cpp" />
     <ClCompile Include="Src\libHandler.cpp" />
     <ClCompile Include="Src\main.cpp" />
-    <ClCompile Include="Src\server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\application.h" />
@@ -156,7 +155,6 @@
     <ClInclude Include="Include\connectionManager.h" />
     <ClInclude Include="Include\host.h" />
     <ClInclude Include="Include\libHandler.h" />
-    <ClInclude Include="Include\server.h" />
     <ClInclude Include="Include\servInfo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

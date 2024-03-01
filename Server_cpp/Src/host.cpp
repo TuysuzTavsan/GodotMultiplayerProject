@@ -1,7 +1,7 @@
 #include <host.h>
 #include <servInfo.h>
 #include <iostream>
-
+#include <memory>
 
 Host::Host()
 {
@@ -46,7 +46,7 @@ void Host::PollEvents()
 {
     ENetEvent _event;
     /* Wait and dispatch all events. */
-    std::cout << "[Polling...]\n";
+    //std::cout << "[Polling...]\n";
     while (enet_host_service(m_server, &_event, servinfo::POLLINTERVAL) > 0)
     {
         switch (_event.type)
@@ -56,26 +56,67 @@ void Host::PollEvents()
                 _event.peer->address.host,
                 _event.peer->address.port);
 
-            //TODO:
-            //Have a generic peer pool.
+            
             m_distributor.AddFreshPeer(_event.peer);
 
             /* Store any relevant client information here. */
             _event.peer->data = reinterpret_cast<void*>(*"Client information");
             continue;
 
+
+
+
+
+
+
+
+
+
         case ENET_EVENT_TYPE_RECEIVE:
-            printf("A packet of length %zu containing %s was received from %s on channel %u.\n",
-                (_event.packet->dataLength),
-                (_event.packet->data),
-                reinterpret_cast<char*>(_event.peer->data),
-                _event.channelID);
+
+            std::cout << "A packet of length: " << _event.packet->dataLength << " received from peerID: " << 
+                _event.peer->connectID<< " on channel: "
+                << (unsigned)_event.channelID << ".\n";
+
+            {
+                std::unique_ptr<char> msg{ new char[_event.packet->dataLength] };
+
+                std::memcpy(reinterpret_cast<void*>(msg.get()), reinterpret_cast<void*>(_event.packet->data),
+                    _event.packet->dataLength);
+
+                std::cout << "Message says:\n\t";
+
+                for (int i = 0; i < _event.packet->dataLength; i++)
+                {
+                    std::cout << msg.get()[i];
+                }
+
+                std::cout << "\n.";
+            }
+            
+
 
             //TODO: Parse message and redirect it to the responsible struct.
 
             /* Clean up the packet now that we're done using it. */
             enet_packet_destroy(_event.packet);
             continue;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         case ENET_EVENT_TYPE_DISCONNECT:
 

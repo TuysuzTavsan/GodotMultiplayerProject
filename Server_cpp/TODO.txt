@@ -15,6 +15,7 @@ On the event receive messageDistributor will distribute messages based on Messag
 Example: Physics related messages will be parsed out from the message and directed to the desired handler. Same will be applied to lobby messages... etc.
 
 
+TODO: MessageParser.
 
 LobbyHandler
 GameSessionHandler

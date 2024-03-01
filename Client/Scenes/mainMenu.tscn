@@ -21,7 +21,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.099986, 0.099986, 0.099986, 1)
+color = Color(0.0980392, 0.0980392, 0.0980392, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -84,5 +84,6 @@ theme_override_styles/hover = ExtResource("2_kkenb")
 theme_override_styles/pressed = ExtResource("3_6w87x")
 text = "Go to Playground"
 
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Connect To Server" to="." method="_on_connect_to_server_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PlaygroundButton" to="." method="_on_playground_button_pressed"]

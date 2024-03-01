@@ -1,19 +1,13 @@
 extends Control
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
+	Client.Reset()
 
 func _on_quit_button_pressed():
 	get_tree().quit(0)
 
-
 func _on_playground_button_pressed():
 	SceneLoader.Load("Scenes/playZone.tscn", true)
+
+func _on_connect_to_server_pressed():
+	SceneLoader.Load("Scenes/authentication.tscn", true)

@@ -2,6 +2,12 @@
 
 #include <cstdint>
 
+enum Protocol
+{
+	Username
+};
+
+
 /*
 Namespace that holds server related constants.
 */
