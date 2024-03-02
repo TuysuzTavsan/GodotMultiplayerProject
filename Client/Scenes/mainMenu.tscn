@@ -64,6 +64,7 @@ size_flags_vertical = 4
 theme_override_styles/normal = ExtResource("1_j5u4p")
 theme_override_styles/hover = ExtResource("2_kkenb")
 theme_override_styles/pressed = ExtResource("3_6w87x")
+toggle_mode = true
 text = "Settings"
 
 [node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer"]

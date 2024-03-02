@@ -8,14 +8,14 @@ func _ready():
 	set_process(false)
 
 
-func _process(delta):
+func _process(_delta):
 	if(!isLoading):
 		return
 	
-	var deleteArr : Array
+	var deleteArr : Array = []
 	
 	for res : String in loadingArr:
-		var progress : Array
+		var progress : Array = []
 		var status = ResourceLoader.load_threaded_get_status(res, progress)
 		
 		match status:

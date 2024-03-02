@@ -1,56 +1,98 @@
 extends Node
 
-var client : ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 const PORT : int = 9999
 const ADRESS : String = "127.0.0.1"
 const CHANNELS : int = 2
+const MAX_PLAYERS : int = 32
+
+var client : ENetConnection = ENetConnection.new()
+var serverPeer : ENetPacketPeer = null
 var peerID : int = -1
 
+signal connected(peer : ENetPacketPeer)
+signal connection_error(peer : ENetPacketPeer)
+signal disconnected(peer : ENetPacketPeer)
+signal connectionResulted(type : ENetPacketPeer.PeerState)
 
-# Called when the node enters the scene tree for the first time.
+var isResolutionNeeded : bool = true
+
+
 func _ready():
-	multiplayer.connected_to_server.connect(_connected_to_server)
-	multiplayer.connection_failed.connect(_connection_failed)
-	multiplayer.server_disconnected.connect(_server_disconnected)
+	connected.connect(connected_to_server)
+	disconnected.connect(server_disconnected)
+	
+	set_process(false)
+
+func _process(_delta):
+	Poll()
+
+func Poll() -> void:
+	var arr : Array = client.service()
+	# Format: EventType - ENetPacketPeer - data - channel
+	
+	var eventType : ENetConnection.EventType = arr[0] 
+	var peer : ENetPacketPeer = arr[1]
+	var data = arr[2]
+	var _channel : int = arr[3]
+	
+	
+	match eventType:
+		client.EVENT_CONNECT:
+			connected.emit(peer)
+			serverPeer = peer
+		client.EVENT_DISCONNECT:
+			disconnected.emit(peer)
+		client.EVENT_ERROR:
+			pass #TODO
+		client.EVENT_NONE:
+			pass #TODO
+		client.EVENT_RECEIVE:
+			print("Received data is:")
+			print(data)
 
 
 func ConnectServer() -> void:
-	var error : Error = client.create_client(ADRESS, PORT, CHANNELS)
+	var error : Error = client.create_host(MAX_PLAYERS, CHANNELS)
 	
 	if(error != OK):
-		match error:
-			ERR_ALREADY_IN_USE:
-				print("[ERROR] Trying to create client but it is already created. Close connection to recreate it.")
-				return
-			_:
-				print("[ERROR] Creating client failed!")
-				get_tree().quit(-1)
+		print("[ERROR] Creating client failed!")
+		get_tree().quit(-1)
 	
-	multiplayer.multiplayer_peer = client
-	print("[Success] Created client.")
+	serverPeer = client.connect_to_host(ADRESS, PORT, CHANNELS)
+	set_process(true)
+
 
 func Reset() -> void:
-	client.close()
+	isResolutionNeeded = true
+	set_process(false)
+	if(serverPeer):
+		serverPeer.peer_disconnect_now()
+		serverPeer = null
+	
+	client.destroy()
+
 
 func SendMsg(msg : String, type : Protocol.type) -> void:
-	var str : String
-	str += "{"
-	str += str(client.get_unique_id())
-	str += "}"
-	str += "{"
-	str += str(type)
-	str += "}"
-	str += "{"
-	str += msg
-	str += "}"
+	var m_str : String = ""
+	m_str += "{"
+	m_str += str(peerID)
+	m_str += "}"
+	m_str += "{"
+	m_str += str(type)
+	m_str += "}"
+	m_str += "{"
+	m_str += msg
+	m_str += "}"
 	
-	client.put_packet(str.to_ascii_buffer())
+	serverPeer.send(0, m_str.to_ascii_buffer(), ENetPacketPeer.FLAG_RELIABLE)
 
-func _connected_to_server() -> void:
+func connected_to_server(_peer : ENetPacketPeer) -> void:
 	print("[Success] Connected to server.")
+	set_process(true)
 
-func _server_disconnected() -> void:
+func server_disconnected(_peer : ENetPacketPeer) -> void:
 	print("[Error] Server disconnected.")
+	set_process(false)
 
-func _connection_failed() -> void:
+func connection_failed(_peer : ENetPacketPeer) -> void:
 	print("[ERROR] Connection failed.")
