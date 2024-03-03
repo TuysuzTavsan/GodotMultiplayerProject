@@ -146,11 +146,14 @@
     <ClCompile Include="Src\clientDistributor.cpp" />
     <ClCompile Include="Src\host.cpp" />
     <ClCompile Include="Src\libHandler.cpp" />
+    <ClCompile Include="Src\locator.cpp" />
     <ClCompile Include="Src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\application.h" />
     <ClInclude Include="Include\clientDistributor.h" />
+    <ClInclude Include="Include\locator.h" />
+    <ClInclude Include="Include\parser.h" />
     <ClInclude Include="Include\safeVector.h" />
     <ClInclude Include="Include\connectionManager.h" />
     <ClInclude Include="Include\host.h" />

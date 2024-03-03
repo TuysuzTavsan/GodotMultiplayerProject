@@ -1,5 +1,7 @@
 extends Node
 
+const popUp = preload("res://Scenes/popUp.tscn")
+
 const PORT : int = 9999
 const ADRESS : String = "127.0.0.1"
 const CHANNELS : int = 2
@@ -13,8 +15,6 @@ signal connected(peer : ENetPacketPeer)
 signal connection_error(peer : ENetPacketPeer)
 signal disconnected(peer : ENetPacketPeer)
 signal connectionResulted(type : ENetPacketPeer.PeerState)
-
-var isResolutionNeeded : bool = true
 
 
 func _ready():
@@ -50,7 +50,6 @@ func Poll() -> void:
 			print("Received data is:")
 			print(data)
 
-
 func ConnectServer() -> void:
 	var error : Error = client.create_host(MAX_PLAYERS, CHANNELS)
 	
@@ -63,7 +62,6 @@ func ConnectServer() -> void:
 
 
 func Reset() -> void:
-	isResolutionNeeded = true
 	set_process(false)
 	if(serverPeer):
 		serverPeer.peer_disconnect_now()
@@ -93,6 +91,16 @@ func connected_to_server(_peer : ENetPacketPeer) -> void:
 func server_disconnected(_peer : ENetPacketPeer) -> void:
 	print("[Error] Server disconnected.")
 	set_process(false)
+	
+	Reset()
+	
+	SceneLoader.Load("Scenes/mainMenu.tscn", true)
+	
+	await SceneLoader.SingleSceneLoaded
+	
+	var popup = popUp.instantiate()
+	get_tree().root.add_child(popup)
+	popup.init("Connection Lost", true, 0)
 
 func connection_failed(_peer : ENetPacketPeer) -> void:
 	print("[ERROR] Connection failed.")

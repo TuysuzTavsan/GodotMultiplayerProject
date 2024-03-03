@@ -1,5 +1,8 @@
 #include <host.h>
 #include <servInfo.h>
+#include <locator.h>
+
+
 #include <iostream>
 #include <memory>
 
@@ -84,14 +87,8 @@ void Host::PollEvents()
                 std::memcpy(reinterpret_cast<void*>(msg.get()), reinterpret_cast<void*>(_event.packet->data),
                     _event.packet->dataLength);
 
-                std::cout << "Message says:\n\t";
-
-                for (int i = 0; i < _event.packet->dataLength; i++)
-                {
-                    std::cout << msg.get()[i];
-                }
-
-                std::cout << "\n.";
+                Locator::GetParser().Handle(_event.peer, std::move(msg), _event.packet->dataLength);
+                
             }
             
 

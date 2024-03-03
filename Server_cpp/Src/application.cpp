@@ -1,7 +1,9 @@
 #include <application.h>
 
 #include <libHandler.h>
+#include <locator.h>
 #include <iostream>
+
 
 Application::Application()
 	:
@@ -24,6 +26,13 @@ bool Application::Init()
 		return false;
 	}
 
+	/* Provide ServiceLocator objects. */
+	
+	Locator::Init();
+
+	Locator::ProvideParser(&m_parser);
+
+
 	m_host.CreateServer();
 
 	return true;
@@ -42,13 +51,19 @@ void Application::Terminate()
 	LibHandler::DeInit();
 }
 
+//TODO Make this thread awake at consistent intervals. SEARCH!
 void Application::controlApp(bool& flag)
 {
+control:
 	char input = 0;
 	std::cin >> input;
 
 	if (input == 'q')
 	{
 		flag = false;
+	}
+	else
+	{
+		goto control;
 	}
 }
