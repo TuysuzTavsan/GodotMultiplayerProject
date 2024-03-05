@@ -48,6 +48,13 @@ public:
 		std::cout << "\n";
 	}
 
+	//Forward
+	//Unhandled datas
+	//Process
+	//Event according to incoming data.
+
+
+
 private:
 
 };

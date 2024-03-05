@@ -61,6 +61,7 @@ func ConnectServer() -> void:
 	set_process(true)
 
 
+#TODO Check for NULL values.
 func Reset() -> void:
 	set_process(false)
 	if(serverPeer):

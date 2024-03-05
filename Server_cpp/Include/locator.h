@@ -1,6 +1,8 @@
 #pragma once
 
 #include <parser.h>
+#include <lobbyHandler.h>
+#include <packetDispatcher.h>
 
 /*
 Service locator implementation taken from https://gameprogrammingpatterns.com/service-locator.html
@@ -15,9 +17,11 @@ public:
 
 	static void Init();
 
+
 	static IParser& GetParser();
 
 	static void ProvideParser(IParser* parser);
+
 
 private:
 

@@ -14,8 +14,14 @@ It will hold every valid client connection in its private containers.
 On the event receive messageDistributor will distribute messages based on MessageProtocol.
 Example: Physics related messages will be parsed out from the message and directed to the desired handler. Same will be applied to lobby messages... etc.
 
+ClientDistributor will only hold temporary clients. Example : A client joining lobby from main menu will result in transmission of client to LobbyHandler.
 
+TODO: Expand clientDistributors methods.
 TODO: MessageParser.
+TODO: Make parser multithreaded. Host will forward incoming datas, Parser will process them in its own thread and will HANDLE accorrdingly.
+TODO: Make sure PacketDispatcher make sense.
+TODO: Client Lobby System.
+
 
 LobbyHandler
 GameSessionHandler

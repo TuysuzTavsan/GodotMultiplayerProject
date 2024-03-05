@@ -54,6 +54,9 @@ public:
 	//Update method will wait on a mutex, mutex will be only unlocked when there is work to do.
 	void Update();
 
+	//Get peer by ID.
+	//TODO
+
 	//Request to change peer handler.
 	void Request(ENetPeer* peer, DistributeID id);
 
