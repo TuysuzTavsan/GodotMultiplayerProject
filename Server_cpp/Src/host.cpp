@@ -60,7 +60,7 @@ void Host::PollEvents()
                 _event.peer->address.port);
 
             
-            m_distributor.AddFreshPeer(_event.peer);
+            m_distributor.AddPeer(_event.peer);
 
             /* Store any relevant client information here. */
             _event.peer->data = reinterpret_cast<void*>(*"Client information");
@@ -87,7 +87,7 @@ void Host::PollEvents()
                 std::memcpy(reinterpret_cast<void*>(msg.get()), reinterpret_cast<void*>(_event.packet->data),
                     _event.packet->dataLength);
 
-                Locator::GetParser().Handle(_event.peer, std::move(msg), _event.packet->dataLength);
+                Locator::GetParser().Handle(_event.peer->connectID, std::move(msg), _event.packet->dataLength);
                 
             }
             
@@ -118,10 +118,14 @@ void Host::PollEvents()
         case ENET_EVENT_TYPE_DISCONNECT:
 
             std::cout << _event.peer->connectID << " disconnected.\n";
+
+            m_distributor.RemoveDisconnectedPeer(_event.peer);
+
+
             /* Reset the peer's client information. */
             _event.peer->data = NULL;
 
-            m_distributor.RemoveDisconnectedPeer(_event.peer);
+            
 
             continue;
         }

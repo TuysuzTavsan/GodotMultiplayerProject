@@ -41,3 +41,8 @@ void Client::Send(const std::string& msg, std::uint8_t channel, const ENetPacket
 	//TODO
 	//MSGSENDER::ADDPACKET(m_peer, channel, packet);
 }
+
+ENetPeer* Client::Get()
+{
+	return m_peer;
+}

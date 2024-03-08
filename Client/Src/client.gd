@@ -71,14 +71,16 @@ func Reset() -> void:
 	client.destroy()
 
 
-func SendMsg(msg : String, type : Protocol.type) -> void:
+func SendMsg(msg : String, topProtocol : Protocol.Top, subProtocol : int) -> void:
 	var m_str : String = ""
 	m_str += "{"
-	m_str += str(peerID)
+	m_str += str(topProtocol)
 	m_str += "}"
+	
 	m_str += "{"
-	m_str += str(type)
+	m_str += str(subProtocol)
 	m_str += "}"
+	
 	m_str += "{"
 	m_str += msg
 	m_str += "}"

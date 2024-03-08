@@ -3,6 +3,7 @@
 void Locator::Init()
 {
 	m_parser = &m_nullParser;
+	m_lobbyHandler = &m_nullLobbyHandler;
 }
 
 
@@ -24,5 +25,26 @@ void Locator::ProvideParser(IParser* parser)
 	}
 }
 
+void Locator::ProvideLobbyHandler(ILobbyHandler* lobbyHandler)
+{
+	if (!lobbyHandler)
+	{
+		//fall back to null service.
+		m_lobbyHandler = &m_nullLobbyHandler;
+	}
+	else
+	{
+		m_lobbyHandler = lobbyHandler;
+	}
+}
+
+ILobbyHandler& Locator::GetLobbyHandler()
+{
+	return *m_lobbyHandler;
+}
+
 NULLParser Locator::m_nullParser;
 IParser* Locator::m_parser{ nullptr };
+
+NULLLobbyHandler Locator::m_nullLobbyHandler;
+ILobbyHandler* Locator::m_lobbyHandler{ nullptr };

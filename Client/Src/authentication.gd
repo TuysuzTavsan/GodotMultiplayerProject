@@ -17,8 +17,8 @@ func _on_return_button_pressed():
 
 
 func _on_connectbutton_pressed():
-	Client.SendMsg(textEdit.text, Protocol.type.Username)
+	Client.SendMsg(textEdit.text, Protocol.Top.Lobby, Protocol.LobbyProt.LobbyCreated)
 
 
 func _on_text_edit_text_submitted(text):
-	Client.SendMsg(text, Protocol.type.Username)
+	Client.SendMsg(textEdit.text, Protocol.Top.Lobby, Protocol.LobbyProt.LobbyCreated)

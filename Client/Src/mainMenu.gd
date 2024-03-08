@@ -51,5 +51,6 @@ func _on_connect_to_server_pressed():
 		add_child(popup2)
 		popup2.init("Connection Failed!", true, 0.0)
 		print("[ERROR] Can not establish connection!")
+		Client.Reset()
 		
 		connectButton.disabled = false

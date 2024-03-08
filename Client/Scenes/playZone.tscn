@@ -1,10 +1,19 @@
-[gd_scene load_steps=21 format=3 uid="uid://diac80koytkwb"]
+[gd_scene load_steps=22 format=3 uid="uid://diac80koytkwb"]
 
 [ext_resource type="Texture2D" uid="uid://b2gib2ycmpe6y" path="res://Resources/kloppenheim_06_puresky_4k.exr" id="1_lg2hn"]
 [ext_resource type="Texture2D" uid="uid://y8lyn2jevn2q" path="res://Resources/kenney_prototype_textures/dark/texture_04.png" id="2_tmv51"]
 [ext_resource type="PackedScene" uid="uid://nqxqm4bimr7y" path="res://Scenes/player.tscn" id="3_i6ys3"]
 [ext_resource type="Texture2D" uid="uid://dmcoi5e05258g" path="res://Resources/kenney_prototype_textures/orange/texture_04.png" id="4_3ak3k"]
 [ext_resource type="Texture2D" uid="uid://cv6tylmm1nj17" path="res://Resources/kenney_prototype_textures/green/texture_04.png" id="5_vxjya"]
+
+[sub_resource type="GDScript" id="GDScript_7520p"]
+script/source = "extends Node3D
+
+
+
+
+
+"
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_bjvds"]
 panorama = ExtResource("1_lg2hn")
@@ -62,6 +71,7 @@ albedo_texture = ExtResource("5_vxjya")
 material = SubResource("StandardMaterial3D_rge2n")
 
 [node name="PlayZone" type="Node3D"]
+script = SubResource("GDScript_7520p")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ju7gh")

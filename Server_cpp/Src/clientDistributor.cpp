@@ -1,5 +1,6 @@
 #include <clientDistributor.h>
 #include <algorithm>
+#include <stdexcept>
 
 ClientDistributor::ClientDistributor()
 {
@@ -11,39 +12,65 @@ ClientDistributor::~ClientDistributor()
 
 }
 
-void ClientDistributor::AddFreshPeer(ENetPeer* peer)
+void ClientDistributor::AddPeer(ENetPeer* peer)
 {
 	std::scoped_lock lk(m_mut);
-	m_unhandledPeers.push_back(peer);
-	m_shouldWork = true;
 
+	auto err = m_unhandledClients.emplace(std::make_pair(peer->connectID, Client(peer)));
+
+	if (err.second == false)
+	{
+		throw std::exception("[EXCEPTION] Can not emplace peer to unordered map.");
+	}
+
+}
+
+void ClientDistributor::AddPeer(Client& client, ClientID& id)
+{
+	std::scoped_lock lk(m_mut);
+
+	auto err = m_unhandledClients.emplace(std::move(id), std::move(client));
+
+	if (err.second == false)
+	{
+		throw std::exception("[EXCEPTION] Can not emplace peer to unordered map.");
+	}
 }
 
 void ClientDistributor::RemoveDisconnectedPeer(ENetPeer* peer)
 {
 	std::scoped_lock lk(m_mut);
 
-	//erase if its from unhandledpeers.
-	m_unhandledPeers.erase(std::remove_if(m_unhandledPeers.begin(), m_unhandledPeers.end(),
-		[peer](ENetPeer* _peer) {return _peer == peer; }
-		),
-		m_unhandledPeers.end()
+
+
+	auto err = std::erase_if(m_unhandledClients,
+		[peer](auto& item) {return item.second.Get() == peer; }
 	);
 
-	//erase if its from distributedpeers.
-	m_distributedPeers.erase(peer);
+	if (err == 0) // Nothing is erased.
+	{
+		throw std::exception("[EXCEPTION] Can not erase peer from unordered map.");
+	}
 
 }
 
-void ClientDistributor::Request(ENetPeer* peer, DistributeID id)
+Client&& ClientDistributor::GetPeer(ClientID id)
 {
 	std::scoped_lock lk(m_mut);
 
-	m_requests.emplace_back(DistributedPeer(peer, id));
+	auto temp = m_unhandledClients.find(id);
 
-}
+	if (temp == m_unhandledClients.end()) //Cant find key.
+	{
+		throw std::exception("[EXCEPTION] Cant find peer by specified key.");
+	}
 
-void ClientDistributor::Update()
-{
-	
+	if (m_unhandledClients.erase(id) == 0) //1 if key value erased, and zero otherwise.
+	{
+		throw std::exception("[EXCEPTION] Can not erase peer from unordered map.");
+	}
+
+
+	return std::move(temp->second);
+
 }

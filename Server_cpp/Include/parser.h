@@ -1,6 +1,6 @@
 #pragma once
 
-#include <enet/enet.h>
+#include <client.h>
 
 #include <iostream>
 
@@ -14,18 +14,14 @@ class IParser
 public:
 
 	virtual ~IParser() {}
-	virtual void Handle(ENetPeer* peer, std::unique_ptr<char>&& data, size_t size) = 0;
+	virtual void Handle(ClientID peer, std::unique_ptr<char>&& data, size_t size) = 0;
 };
 
 class NULLParser : public IParser
 {
 public:
 
-	void Handle(ENetPeer* peer, std::unique_ptr<char>&& data, size_t size) override
-	{
-		/*Do nothing*/
-		std::cout << "[NULLParser is Provided]\n";
-	}
+	void Handle(ClientID peer, std::unique_ptr<char>&& data, size_t size) override;
 };
 
 
@@ -33,20 +29,10 @@ class Parser : public IParser
 {
 public:
 
-	Parser() {}
-	~Parser() {}
+	Parser();
+	~Parser();
 
-	void Handle(ENetPeer* peer, std::unique_ptr<char>&& data, size_t size) override
-	{
-		std::cout << "Message says:\n\t";
-
-		for (int i = 0; i < size; i++)
-		{
-			std::cout << data.get()[i];
-		}
-
-		std::cout << "\n";
-	}
+	void Handle(ClientID peer, std::unique_ptr<char>&& data, size_t size) override;
 
 	//Forward
 	//Unhandled datas

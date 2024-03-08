@@ -152,6 +152,7 @@
     <ClCompile Include="Src\locator.cpp" />
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\packetDispatcher.cpp" />
+    <ClCompile Include="Src\parser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\application.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Include\locator.h" />
     <ClInclude Include="Include\packetDispatcher.h" />
     <ClInclude Include="Include\parser.h" />
+    <ClInclude Include="Include\protocol.h" />
     <ClInclude Include="Include\safeVector.h" />
     <ClInclude Include="Include\connectionManager.h" />
     <ClInclude Include="Include\host.h" />

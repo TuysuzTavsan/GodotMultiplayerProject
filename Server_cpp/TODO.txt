@@ -21,7 +21,7 @@ TODO: MessageParser.
 TODO: Make parser multithreaded. Host will forward incoming datas, Parser will process them in its own thread and will HANDLE accorrdingly.
 TODO: Make sure PacketDispatcher make sense.
 TODO: Client Lobby System.
-
+TODO: Decide which ID system to use (custom id or ENetPeer.connectionID)
 
 LobbyHandler
 GameSessionHandler

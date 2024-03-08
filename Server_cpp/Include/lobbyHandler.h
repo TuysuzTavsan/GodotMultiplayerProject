@@ -2,6 +2,8 @@
 
 #include <unordered_map>
 #include <lobby.h>
+#include <protocol.h>
+#include <memory>
 
 /*
 LobbyHandler is the top level class that will operate on lobbies. It has the ability to create and destroy lobbies.
@@ -9,7 +11,26 @@ Mostly it will operate with lobby helper functions rather then doing things itse
 This structure is thread safe?
 */
 
-class LobbyHandler
+class ILobbyHandler
+{
+public:
+
+	~ILobbyHandler() {}
+
+	virtual void InputMsg(Protocol protocol, std::unique_ptr<char>&& data) = 0;
+};
+
+class NULLLobbyHandler : public ILobbyHandler
+{
+public:
+
+	void InputMsg(Protocol protocol, std::unique_ptr<char>&& data) override
+	{
+		//do nothing.
+	}
+};
+
+class LobbyHandler : public ILobbyHandler
 {
 public:
 
@@ -23,7 +44,7 @@ public:
 	LobbyHandler& operator=(const LobbyHandler& other) = delete;
 
 	//Forwarding msg from external source needs public method here.
-	void InputMsg();
+	void InputMsg(Protocol protocol, std::unique_ptr<char>&& data) override;
 
 private:
 

@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#include <iostream>
+
 LobbyHandler::LobbyHandler()
 	:
 	m_lobbies{},
@@ -17,6 +19,8 @@ LobbyHandler::~LobbyHandler()
 
 void LobbyHandler::CreateLobby()
 {
+	std::cout << "[SUCCESS] Created lobby!\n Total Lobbies:" << m_counter << " \n";
+
 	if (m_counter == MAX_LOBBIES)
 	{
 		throw std::exception("[EXCEPTION] Reached max number of lobbies.");
@@ -38,4 +42,32 @@ void LobbyHandler::EraseLobby(const LobbyID& id)
 		throw std::exception("[EXCEPTION] Trying to erase unexisting lobby.");
 	}
 	//TODO handle counter for erasing
+}
+
+void LobbyHandler::InputMsg(Protocol protocol, std::unique_ptr<char>&& data)
+{
+
+	LobbyProt prot = static_cast<LobbyProt>(protocol.m_subProt);
+
+	switch (prot)
+	{
+	case LobbyProt::LobbyEntered:
+		break;
+	case LobbyProt::LobbyLeft:
+		break;
+	case LobbyProt::LobbyCreated:
+	
+		CreateLobby();
+
+		break;
+	case LobbyProt::LobbyOwnerChanged:
+		break;
+	case LobbyProt::LobbyMessageReceived:
+		break;
+	case LobbyProt::LobbyMessageSent:
+		break;
+	default:
+		break;
+	}
+
 }

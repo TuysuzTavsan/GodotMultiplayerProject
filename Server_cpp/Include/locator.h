@@ -20,8 +20,11 @@ public:
 
 	static IParser& GetParser();
 
+	static ILobbyHandler& GetLobbyHandler();
+
 	static void ProvideParser(IParser* parser);
 
+	static void ProvideLobbyHandler(ILobbyHandler* lobbyHandler);
 
 private:
 
@@ -30,4 +33,7 @@ private:
 
 	static NULLParser m_nullParser;
 	static IParser* m_parser;
+	
+	static NULLLobbyHandler m_nullLobbyHandler;
+	static ILobbyHandler* m_lobbyHandler;
 };

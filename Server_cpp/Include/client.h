@@ -35,6 +35,8 @@ public:
 	//Send_msg
 	void Send(const std::string& msg, std::uint8_t channel, const ENetPacketFlag& flag);
 
+	ENetPeer* Get();
+
 
 private:
 
