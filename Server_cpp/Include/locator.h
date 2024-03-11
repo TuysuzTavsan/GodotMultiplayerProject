@@ -1,8 +1,9 @@
 #pragma once
 
-#include <parser.h>
+#include <eventDistributor.h>
 #include <lobbyHandler.h>
 #include <packetDispatcher.h>
+#include <clientDistributor.h>
 
 /*
 Service locator implementation taken from https://gameprogrammingpatterns.com/service-locator.html
@@ -13,27 +14,28 @@ class Locator
 {
 public:
 
-	
-
 	static void Init();
-
-
-	static IParser& GetParser();
-
-	static ILobbyHandler& GetLobbyHandler();
-
-	static void ProvideParser(IParser* parser);
+	
+	static void ProvideEventDistributor(IEventDistributor* eventDistributor);
+	static IEventDistributor& GetEventDistributor();
 
 	static void ProvideLobbyHandler(ILobbyHandler* lobbyHandler);
+	static ILobbyHandler& GetLobbyHandler();
+
+	static void ProvideClientDistributor(IClientDistributor* clientDistributor);
+	static IClientDistributor& GetClientDistributor();
 
 private:
 
 	Locator() = default;
 	~Locator() = default;
 
-	static NULLParser m_nullParser;
-	static IParser* m_parser;
+	static NULLEventDistributor m_nullEventDistributor;
+	static IEventDistributor* m_eventDistributor;
 	
 	static NULLLobbyHandler m_nullLobbyHandler;
 	static ILobbyHandler* m_lobbyHandler;
+
+	static NULLClientDistributor m_nullClientDistributor;
+	static IClientDistributor* m_clientDistributor;
 };

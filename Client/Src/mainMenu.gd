@@ -38,11 +38,12 @@ func _on_connect_to_server_pressed():
 		
 		popup.setmsg(tempstr)
 		
-		if(Client.serverPeer.get_state() == ENetPacketPeer.STATE_CONNECTED):
+		if(Client.m_server.get_state() == ENetPacketPeer.STATE_CONNECTED):
 			break
 	
-	
-	if(Client.serverPeer.get_state() == ENetPacketPeer.STATE_CONNECTED):
+	if(Client.m_server.get_state() == ENetPacketPeer.STATE_CONNECTED):
+		Client.Activate()
+		PacketDispatcher.Activate()
 		remove_child(popup)
 		SceneLoader.Load("Scenes/authentication.tscn", true)
 	else:

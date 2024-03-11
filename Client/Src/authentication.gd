@@ -11,14 +11,16 @@ func _ready():
 func _on_quit_button_pressed():
 	get_tree().quit(0)
 
-
 func _on_return_button_pressed():
 	SceneLoader.Load("Scenes/mainMenu.tscn", true)
 
-
 func _on_connectbutton_pressed():
-	Client.SendMsg(textEdit.text, Protocol.Top.Lobby, Protocol.LobbyProt.LobbyCreated)
-
+	var str : String = textEdit.text
+	var pckt : Packet = Packet.new(0, ENetPacketPeer.FLAG_RELIABLE)
+	pckt.SetData(str, Prot.Top.Distribute, Prot.Distribute.lobby)
+	PacketDispatcher.PutPacket(pckt)
 
 func _on_text_edit_text_submitted(text):
-	Client.SendMsg(textEdit.text, Protocol.Top.Lobby, Protocol.LobbyProt.LobbyCreated)
+	var pckt : Packet = Packet.new(0, ENetPacketPeer.FLAG_RELIABLE)
+	pckt.SetData(text, Prot.Top.Distribute, Prot.Distribute.lobby)
+	PacketDispatcher.PutPacket(pckt)

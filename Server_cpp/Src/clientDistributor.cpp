@@ -1,4 +1,5 @@
 #include <clientDistributor.h>
+#include <handlerHelper.h>
 #include <algorithm>
 #include <stdexcept>
 
@@ -12,38 +13,100 @@ ClientDistributor::~ClientDistributor()
 
 }
 
-void ClientDistributor::AddPeer(ENetPeer* peer)
+void ClientDistributor::AddFreshPeer(ENetPeer* peer)
 {
 	std::scoped_lock lk(m_mut);
 
-	auto err = m_unhandledClients.emplace(std::make_pair(peer->connectID, Client(peer)));
+	auto err = m_clients.emplace(peer->connectID, peer);
 
 	if (err.second == false)
 	{
-		throw std::exception("[EXCEPTION] Can not emplace peer to unordered map.");
+		throw std::exception("[EXCEPTION] Can not emplace fresh peer to unordered map.");
 	}
 
 }
 
-void ClientDistributor::AddPeer(Client& client, ClientID& id)
+void ClientDistributor::ReDistributePeer(ClientID& id, HandlerID& handlerID)
 {
 	std::scoped_lock lk(m_mut);
 
-	auto err = m_unhandledClients.emplace(std::move(id), std::move(client));
+	auto it = std::find_if(m_clients.begin(), m_clients.end(),
+		[&id](const auto& pair) {return pair.first.m_clientID == id; }
+	);
 
-	if (err.second == false)
+	if (it == m_clients.end())
 	{
-		throw std::exception("[EXCEPTION] Can not emplace peer to unordered map.");
+		//Couldnt find
+		throw std::exception("[EXCEPTION] Can not find peer to redistribute.");
 	}
+
+	if (it->first.m_handlerID == handlerID)
+	{
+		//Already there.
+		throw std::exception("[EXCEPTION] Client already distributed to desired Handler.");
+	}
+
+	//Extract, update key, emplace.
+	auto node = m_clients.extract(it);
+	//Change member of the key.
+	node.key().m_handlerID = handlerID;
+	//reinsert
+	auto err = m_clients.insert(std::move(node));
+
+	if (!err.inserted) 
+	{
+		//emplace did not happen.
+		throw std::exception("[EXCEPTION] Can not emplace redistributed peer.");
+	}
+
+	auto handler = HandlerHelper::GetSubscriber(handlerID);
+	handler.get().AddClient(std::ref(err.node.mapped()));
+
+}
+
+void ClientDistributor::ReDistributePeer(ClientID& id, HandlerID&& handlerID)
+{
+	std::scoped_lock lk(m_mut);
+
+	auto it = std::find_if(m_clients.begin(), m_clients.end(),
+		[&id](const auto& pair) {return pair.first.m_clientID == id; }
+	);
+
+	if (it == m_clients.end())
+	{
+		//Couldnt find
+		throw std::exception("[EXCEPTION] Can not find peer to redistribute.");
+	}
+
+	if (it->first.m_handlerID == handlerID)
+	{
+		//Already there.
+		throw std::exception("[EXCEPTION] Client already distributed to desired Handler.");
+	}
+
+	//Extract, update key, emplace.
+	auto node = m_clients.extract(it);
+	//Change member of the key.
+	node.key().m_handlerID = handlerID;
+	//reinsert
+	auto err = m_clients.insert(std::move(node));
+
+	if (!err.inserted)
+	{
+		//emplace did not happen.
+		throw std::exception("[EXCEPTION] Can not emplace redistributed peer.");
+	}
+
+	auto handler = HandlerHelper::GetSubscriber(handlerID);
+	handler.get().AddClient(std::ref(err.node.mapped()));
+
 }
 
 void ClientDistributor::RemoveDisconnectedPeer(ENetPeer* peer)
 {
 	std::scoped_lock lk(m_mut);
 
-
-
-	auto err = std::erase_if(m_unhandledClients,
+	auto err = std::erase_if(m_clients,
 		[peer](auto& item) {return item.second.Get() == peer; }
 	);
 
@@ -51,26 +114,5 @@ void ClientDistributor::RemoveDisconnectedPeer(ENetPeer* peer)
 	{
 		throw std::exception("[EXCEPTION] Can not erase peer from unordered map.");
 	}
-
-}
-
-Client&& ClientDistributor::GetPeer(ClientID id)
-{
-	std::scoped_lock lk(m_mut);
-
-	auto temp = m_unhandledClients.find(id);
-
-	if (temp == m_unhandledClients.end()) //Cant find key.
-	{
-		throw std::exception("[EXCEPTION] Cant find peer by specified key.");
-	}
-
-	if (m_unhandledClients.erase(id) == 0) //1 if key value erased, and zero otherwise.
-	{
-		throw std::exception("[EXCEPTION] Can not erase peer from unordered map.");
-	}
-
-
-	return std::move(temp->second);
 
 }

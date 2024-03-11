@@ -28,6 +28,11 @@ Client& Client::operator=(Client&& other) noexcept
 	return *this;
 }
 
+bool Client::operator==(const Client& other) const
+{
+	return m_peer == other.m_peer;
+}
+
 void Client::Send(const std::string& msg, std::uint8_t channel, const ENetPacketFlag& flag)
 {
 	/* Create a reliable packet of size 7 containing "packet\0" */

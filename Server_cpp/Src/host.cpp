@@ -60,7 +60,7 @@ void Host::PollEvents()
                 _event.peer->address.port);
 
             
-            m_distributor.AddPeer(_event.peer);
+            Locator::GetClientDistributor().AddFreshPeer(_event.peer);
 
             /* Store any relevant client information here. */
             _event.peer->data = reinterpret_cast<void*>(*"Client information");
@@ -81,15 +81,9 @@ void Host::PollEvents()
                 _event.peer->connectID<< " on channel: "
                 << (unsigned)_event.channelID << ".\n";
 
-            {
-                std::unique_ptr<char> msg{ new char[_event.packet->dataLength] };
 
-                std::memcpy(reinterpret_cast<void*>(msg.get()), reinterpret_cast<void*>(_event.packet->data),
-                    _event.packet->dataLength);
+            Locator::GetEventDistributor().Handle(_event);
 
-                Locator::GetParser().Handle(_event.peer->connectID, std::move(msg), _event.packet->dataLength);
-                
-            }
             
 
 
@@ -119,7 +113,7 @@ void Host::PollEvents()
 
             std::cout << _event.peer->connectID << " disconnected.\n";
 
-            m_distributor.RemoveDisconnectedPeer(_event.peer);
+            Locator::GetClientDistributor().RemoveDisconnectedPeer(_event.peer);
 
 
             /* Reset the peer's client information. */

@@ -9,7 +9,7 @@ LobbyHandler::LobbyHandler()
 	m_lobbies{},
 	m_counter{0}
 {
-
+	this->SetID(HandlerID::lobby);
 }
 
 LobbyHandler::~LobbyHandler()
@@ -47,26 +47,15 @@ void LobbyHandler::EraseLobby(const LobbyID& id)
 void LobbyHandler::InputMsg(Protocol protocol, std::unique_ptr<char>&& data)
 {
 
-	LobbyProt prot = static_cast<LobbyProt>(protocol.m_subProt);
+	prot::Lobby prot = static_cast<prot::Lobby>(protocol.m_subProt);
 
 	switch (prot)
 	{
-	case LobbyProt::LobbyEntered:
-		break;
-	case LobbyProt::LobbyLeft:
-		break;
-	case LobbyProt::LobbyCreated:
+
+	case prot::Lobby::LobbyCreated:
 	
 		CreateLobby();
 
-		break;
-	case LobbyProt::LobbyOwnerChanged:
-		break;
-	case LobbyProt::LobbyMessageReceived:
-		break;
-	case LobbyProt::LobbyMessageSent:
-		break;
-	default:
 		break;
 	}
 

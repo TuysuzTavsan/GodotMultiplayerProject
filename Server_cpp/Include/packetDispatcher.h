@@ -1,6 +1,6 @@
 #pragma once
 
-#include <enet/enet.h>
+#include <packet.h>
 
 #include <vector>
 #include <mutex>
@@ -17,12 +17,7 @@ Other threads may safely request sending packages as this class guarentees threa
 //Which is pointless anyway.
 
 
-struct packetRequest
-{
-	ENetPeer* to;
-	ENetPacket* packet;
-	std::uint8_t channel;
-};
+
 
 class PacketDispatcher
 {
@@ -37,15 +32,20 @@ public:
 	//Copy assignment is not allowed.
 	PacketDispatcher& operator=(const PacketDispatcher& other) = delete;
 
+	//Will dispatch packets in its own thread.
 	void Dispatch();
 
-	void PutPacket(packetRequest packet);
+	//Put packet to dispatch on the next iteration.
+	void PutPacket(PacketOut& packet);
+
+	//Put packet to dispatch on the next iteration.
+	void PutPacket(PacketOut&& packet);
 
 
 private:
 
 	std::condition_variable m_cond;
 	std::mutex m_mut;
-	std::vector<packetRequest> m_packetIn; //Packets to store packets.
-	std::vector<packetRequest> m_packetOut; //Packets to dispatch on next iteration.
+	std::vector<PacketOut> m_packetIn; //Packets to store packets.
+	std::vector<PacketOut> m_packetOut; //Packets to dispatch on next iteration.
 };

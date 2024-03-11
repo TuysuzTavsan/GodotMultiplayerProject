@@ -2,27 +2,27 @@
 
 void Locator::Init()
 {
-	m_parser = &m_nullParser;
+	m_eventDistributor = &m_nullEventDistributor;
 	m_lobbyHandler = &m_nullLobbyHandler;
+	m_clientDistributor = &m_nullClientDistributor;
 }
 
-
-IParser& Locator::GetParser()
+void Locator::ProvideEventDistributor(IEventDistributor* eventDistributor)
 {
-	return *m_parser;
-}
-
-void Locator::ProvideParser(IParser* parser)
-{
-	if (!parser)
+	if (!eventDistributor)
 	{
 		//fall back to null service.
-		m_parser = &m_nullParser;
+		m_eventDistributor = &m_nullEventDistributor;
 	}
 	else
 	{
-		m_parser = parser;
+		m_eventDistributor = eventDistributor;
 	}
+}
+
+IEventDistributor& Locator::GetEventDistributor()
+{
+	return *m_eventDistributor;
 }
 
 void Locator::ProvideLobbyHandler(ILobbyHandler* lobbyHandler)
@@ -43,8 +43,30 @@ ILobbyHandler& Locator::GetLobbyHandler()
 	return *m_lobbyHandler;
 }
 
-NULLParser Locator::m_nullParser;
-IParser* Locator::m_parser{ nullptr };
+void Locator::ProvideClientDistributor(IClientDistributor* clientDistributor)
+{
+	if (!clientDistributor)
+	{
+		//fall back to null service.
+		m_clientDistributor = &m_nullClientDistributor;
+	}
+	else
+	{
+		m_clientDistributor = clientDistributor;
+	}
+
+}
+
+IClientDistributor& Locator::GetClientDistributor()
+{
+	return *m_clientDistributor;
+}
+
+NULLEventDistributor Locator::m_nullEventDistributor;
+IEventDistributor* Locator::m_eventDistributor{ nullptr };
 
 NULLLobbyHandler Locator::m_nullLobbyHandler;
 ILobbyHandler* Locator::m_lobbyHandler{ nullptr };
+
+NULLClientDistributor Locator::m_nullClientDistributor;
+IClientDistributor* Locator::m_clientDistributor{ nullptr };

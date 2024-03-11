@@ -7,9 +7,10 @@ const ADRESS : String = "127.0.0.1"
 const CHANNELS : int = 2
 const MAX_PLAYERS : int = 32
 
-var client : ENetConnection = ENetConnection.new()
-var serverPeer : ENetPacketPeer = null
-var peerID : int = -1
+var m_client : ENetConnection = ENetConnection.new()
+var m_server : ENetPacketPeer = null
+var m_peerID : int = -1
+var m_isValid : bool = false
 
 signal connected(peer : ENetPacketPeer)
 signal connection_error(peer : ENetPacketPeer)
@@ -20,14 +21,19 @@ signal connectionResulted(type : ENetPacketPeer.PeerState)
 func _ready():
 	connected.connect(connected_to_server)
 	disconnected.connect(server_disconnected)
-	
-	set_process(false)
 
 func _process(_delta):
-	Poll()
+	if(m_isValid):
+		Poll()
+
+func Activate() -> void:
+	m_isValid = true
+
+func Inactivate() -> void:
+	m_isValid = false
 
 func Poll() -> void:
-	var arr : Array = client.service()
+	var arr : Array = m_client.service()
 	# Format: EventType - ENetPacketPeer - data - channel
 	
 	var eventType : ENetConnection.EventType = arr[0] 
@@ -37,63 +43,51 @@ func Poll() -> void:
 	
 	
 	match eventType:
-		client.EVENT_CONNECT:
+		m_client.EVENT_CONNECT:
 			connected.emit(peer)
-			serverPeer = peer
-		client.EVENT_DISCONNECT:
+			m_server = peer
+		m_client.EVENT_DISCONNECT:
 			disconnected.emit(peer)
-		client.EVENT_ERROR:
+		m_client.EVENT_ERROR:
 			pass #TODO
-		client.EVENT_NONE:
+		m_client.EVENT_NONE:
 			pass #TODO
-		client.EVENT_RECEIVE:
+		m_client.EVENT_RECEIVE:
 			print("Received data is:")
 			print(data)
 
 func ConnectServer() -> void:
-	var error : Error = client.create_host(MAX_PLAYERS, CHANNELS)
+	var error : Error = m_client.create_host(MAX_PLAYERS, CHANNELS)
 	
 	if(error != OK):
 		print("[ERROR] Creating client failed!")
 		get_tree().quit(-1)
 	
-	serverPeer = client.connect_to_host(ADRESS, PORT, CHANNELS)
-	set_process(true)
+	m_server = m_client.connect_to_host(ADRESS, PORT, CHANNELS)
+	Activate()
 
 
 #TODO Check for NULL values.
 func Reset() -> void:
-	set_process(false)
-	if(serverPeer):
-		serverPeer.peer_disconnect_now()
-		serverPeer = null
+	if(!m_isValid):
+		return
 	
-	client.destroy()
-
-
-func SendMsg(msg : String, topProtocol : Protocol.Top, subProtocol : int) -> void:
-	var m_str : String = ""
-	m_str += "{"
-	m_str += str(topProtocol)
-	m_str += "}"
 	
-	m_str += "{"
-	m_str += str(subProtocol)
-	m_str += "}"
+	if(m_server):
+		m_server.peer_disconnect_now()
+		m_server = null
 	
-	m_str += "{"
-	m_str += msg
-	m_str += "}"
+	PacketDispatcher.Inactivate()
 	
-	serverPeer.send(0, m_str.to_ascii_buffer(), ENetPacketPeer.FLAG_RELIABLE)
+	m_peerID = -1
+	m_client.destroy()
+	Inactivate()
 
 func connected_to_server(_peer : ENetPacketPeer) -> void:
 	print("[Success] Connected to server.")
-	set_process(true)
 
 func server_disconnected(_peer : ENetPacketPeer) -> void:
 	print("[Error] Server disconnected.")
-	set_process(false)
 	
 	Reset()
 	

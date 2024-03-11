@@ -1,11 +1,13 @@
 #pragma once
 
-#include <unordered_map>
+#include <map>
 #include <mutex>
 
 #include <enet/enet.h>
 
 #include <client.h>
+#include <clientInfo.h>
+#include <iostream>
 
 /*
 Responsible from distributing clients to network pipeline.
@@ -15,31 +17,73 @@ Every client that just entered lobby will be distributed to the lobby's ownershi
 Every call to this class is blocking. (protected by a mutex.)
 */
 
-class ClientDistributor {
+class IClientDistributor
+{
+public:
+
+	IClientDistributor() = default;
+	virtual ~IClientDistributor() = default;
+
+	virtual void AddFreshPeer(ENetPeer* peer) = 0;
+	virtual void ReDistributePeer(ClientID& id, HandlerID& handlerID) = 0;
+	virtual void ReDistributePeer(ClientID& id, HandlerID&& handlerID) = 0;
+	virtual void RemoveDisconnectedPeer(ENetPeer* id) = 0;
+
+};
+
+class NULLClientDistributor : public IClientDistributor
+{
+public:
+
+	NULLClientDistributor() = default;
+	~NULLClientDistributor() = default;
+
+	void AddFreshPeer(ENetPeer* peer) override
+	{
+		std::cout << "[NULLClientDistributor provided]\n";
+	}
+
+	void ReDistributePeer(ClientID& id, HandlerID& handlerID) override
+	{
+		std::cout << "[NULLClientDistributor provided]\n";
+	}
+
+	//Call this method to redistribute client.
+	void ReDistributePeer(ClientID& id, HandlerID&& handlerID) override
+	{
+		std::cout << "[NULLClientDistributor provided]\n";
+	}
+
+	void RemoveDisconnectedPeer(ENetPeer* id) override
+	{
+		std::cout << "[NULLClientDistributor provided]\n";
+	}
+};
+
+
+class ClientDistributor : public IClientDistributor
+{
 public:
 
 	ClientDistributor();
 	~ClientDistributor();
 
 	//Call this method whenever new connection is established.
-	void AddPeer(ENetPeer* peer);
+	void AddFreshPeer(ENetPeer* peer) override;
 
-	void AddPeer(Client& client, ClientID& id);
+	//Call this method to redistribute client.
+	void ReDistributePeer(ClientID& id, HandlerID& handlerID) override;
+
+	//Call this method to redistribute client.
+	void ReDistributePeer(ClientID& id, HandlerID&& handlerID) override;
 
 	//Remove a disconnected peer.
-	void RemoveDisconnectedPeer(ENetPeer* id);
+	void RemoveDisconnectedPeer(ENetPeer* id) override;
 
-	Client&& GetPeer(ClientID id);
-
-	//Get peer by ID.
-	//TODO
+	//Get peer
 
 private:
 
-	//Find the peer and get its key.
-	// 
-	//void FindPeer(ENetPeer* peer);
-
 	std::mutex m_mut;
-	std::unordered_map<ClientID, class Client> m_unhandledClients; //vector of peers that are not handled yet.	std::mutex m_mut;
+	std::map<ClientInfo, Client> m_clients; // map of peers that are unhandled at the moment.
 };

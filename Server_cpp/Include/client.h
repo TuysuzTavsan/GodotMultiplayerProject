@@ -31,6 +31,7 @@ public:
 	//Copy assignment operator is prohibited.
 	Client& operator=(const Client& other) = delete;
 	
+	bool operator==(const Client& other) const;
 
 	//Send_msg
 	void Send(const std::string& msg, std::uint8_t channel, const ENetPacketFlag& flag);

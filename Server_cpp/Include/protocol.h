@@ -1,63 +1,66 @@
 #pragma once
 
 #include <cstdint>
+#include <handlerID.h>
+#include <string>
 
 /*
 
-FORMAT: {TopProtocol}{SubProtocol}{Actual Data}
+FORMAT: {TopProtocol}{SubProtocol}{Data}
+
+TopProtocol will be used by the Parser to forward incoming packets.
+SubProtocol is meant to be used by the packet consumer class, example LobbyHandler.
 
 */
 
-enum class TopProtocol
+namespace prot
 {
-	Unspecified,
-	Core,
-	Lobby,
-	Game,
-	Physics
-};
+	enum class Top
+	{
+		Unspecified,
+		Distribute,
+		Lobby,
+	};
 
-enum class CoreProt
-{
-	UserName
-};
+	enum class Lobby
+	{
+		LobbyCreated
+	};
 
-enum class LobbyProt
-{
-	LobbyEntered,
-	LobbyLeft,
-	LobbyCreated,
-	LobbyOwnerChanged,
-	LobbyMessageReceived,
-	LobbyMessageSent
-};
-
-enum class GameProt
-{
-
-};
-
-enum class PhysicsProt
-{
-
-};
+	using Distribute = HandlerID;
+}
 
 
+//Helper class to solve protocol of incoming packets.
 struct Protocol
 {
-	TopProtocol m_topProt;
+	prot::Top m_topProt;
 	std::uint8_t m_subProt;
+
+	Protocol()
+		:
+		m_topProt{ prot::Top::Unspecified },
+		m_subProt{ 0 }
+	{
+
+	}
 
 	Protocol(const std::string& data)
 		:
-		m_topProt{TopProtocol::Unspecified},
+		m_topProt{prot::Top::Unspecified},
 		m_subProt{}
 	{
 		//This code will assume every message is received fully and lossless.
 		
-		m_topProt = static_cast<TopProtocol>(data[1] - '0');
+		m_topProt = static_cast<prot::Top>(data[1] - '0');
 		m_subProt = data[4] - '0';
 
+	}
+
+	void Set(const std::string& data)
+	{
+		m_topProt = static_cast<prot::Top>(data[1] - '0');
+		m_subProt = data[4] - '0';
 	}
 
 
@@ -65,44 +68,3 @@ struct Protocol
 
 
 };
-
-
-
-
-
-
-
-
-
-/*
-
-Core = Top protocol #06
-UserName,
-Activenes,
-isFocused,
-
-
-
-*/
-
-/*
-
-Lobby = Top protocol #1
-LobbyMessageSubmit,-
-LobbyMessageReceived,
-LobbyEntered,
-LobbyExit,
-
-
-*/
-
-/*
-
-
-Game = Top protocol #2
-GameStarted,
-GameEnd,
-PlayerKilled,
-GameMsgReceived
-
-*/

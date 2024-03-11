@@ -45,7 +45,7 @@ size_flags_vertical = 4
 [node name="TextEdit" type="LineEdit" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(300, 50)
 layout_mode = 2
-placeholder_text = "Enter Message"
+placeholder_text = "Enter Usename"
 alignment = 1
 
 [node name="Connectbutton" type="Button" parent="MarginContainer/VBoxContainer"]
@@ -53,7 +53,7 @@ layout_mode = 2
 theme_override_styles/normal = ExtResource("1_12kas")
 theme_override_styles/hover = ExtResource("2_lijxd")
 theme_override_styles/pressed = ExtResource("3_hi63d")
-text = "Send Message"
+text = "Submit"
 
 [node name="ReturnButton" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

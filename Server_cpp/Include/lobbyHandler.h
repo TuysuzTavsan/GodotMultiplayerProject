@@ -1,9 +1,10 @@
 #pragma once
 
 #include <unordered_map>
+
 #include <lobby.h>
 #include <protocol.h>
-#include <memory>
+#include <ihandler.h>
 
 /*
 LobbyHandler is the top level class that will operate on lobbies. It has the ability to create and destroy lobbies.
@@ -30,7 +31,7 @@ public:
 	}
 };
 
-class LobbyHandler : public ILobbyHandler
+class LobbyHandler : public ILobbyHandler, public IHandler
 {
 public:
 

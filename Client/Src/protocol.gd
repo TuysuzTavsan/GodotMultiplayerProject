@@ -1,41 +1,26 @@
-class_name Protocol
+class_name Prot
+
+
+####
+#FORMAT: {TopProtocol}{SubProtocol}{Data}
+#TopProtocol will be used by the Parser to forward incoming packets.
+#SubProtocol is meant to be used by the packet consumer class, example LobbyHandler.
+####
+
 enum Top
 {
 	Unspecified,
-	Core,
+	Distribute,
 	Lobby,
-	Game,
-	Physics
 }
 
-
-#FORMAT: {TopProtocol}{SubProtocol}{Actual Data}
-
-enum CoreProt
+enum Lobby
 {
-	UserName
-};
+	LobbyCreated
+}
 
-enum LobbyProt
+enum Distribute
 {
-	LobbyEntered,
-	LobbyLeft,
-	LobbyCreated,
-	LobbyOwnerChanged,
-	LobbyMessageReceived,
-	LobbyMessageSent
-};
-
-enum GameProt
-{
-
-};
-
-enum PhysicsProt
-{
-
-};
-
-
-
-# type id data
+	unspecified,
+	lobby,
+}

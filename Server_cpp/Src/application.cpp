@@ -30,8 +30,9 @@ bool Application::Init()
 	
 	Locator::Init();
 
-	Locator::ProvideParser(&m_parser);
+	Locator::ProvideEventDistributor(&m_eventDistributor);
 	Locator::ProvideLobbyHandler(&m_lobbyHandler);
+	Locator::ProvideClientDistributor(&m_clientDistributor);
 
 	m_host.CreateServer();
 

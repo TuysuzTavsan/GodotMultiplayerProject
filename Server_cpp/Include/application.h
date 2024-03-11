@@ -2,8 +2,9 @@
 
 #include <host.h>
 #include <thread>
-#include <parser.h>
+#include <eventDistributor.h>
 #include <lobbyHandler.h>
+#include <clientDistributor.h>
 
 /*
 Main Application struct.
@@ -29,7 +30,8 @@ private:
 
 	Host m_host;
 	LobbyHandler m_lobbyHandler;
-	Parser m_parser;
+	ClientDistributor m_clientDistributor;
+	EventDistributor m_eventDistributor;
 	bool shouldRun;
 	std::jthread controlThrd; //TODO: change this to input controller thread.
 };

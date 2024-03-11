@@ -1,5 +1,7 @@
 #include <packetDispatcher.h>
 
+#include <iostream>
+
 PacketDispatcher::PacketDispatcher()
 {
 
@@ -24,16 +26,26 @@ void PacketDispatcher::Dispatch()
 
 	for (auto it = m_packetOut.begin(); it != m_packetOut.end();)
 	{
-		enet_peer_send(it->to, it->channel, it->packet);
+		if (it->Send() == 0)
+		{
+			std::cout << "Successfully sended packet.\n";
+		}
 		it = m_packetOut.erase(it);
 	}
 
 	
 }
 
-void PacketDispatcher::PutPacket(packetRequest packet)
+void PacketDispatcher::PutPacket(PacketOut& packet)
 {
 	std::scoped_lock lck(m_mut);
 	
-	m_packetIn.push_back(packet);
+	m_packetIn.push_back(std::move(packet));
+}
+
+void PacketDispatcher::PutPacket(PacketOut&& packet)
+{
+	std::scoped_lock lck(m_mut);
+
+	m_packetIn.push_back(std::move(packet));
 }

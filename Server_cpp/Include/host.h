@@ -1,10 +1,6 @@
 #pragma once
 
 #include <enet/enet.h>
-#include <safeVector.h>
-#include <clientDistributor.h>
-#include <packetDispatcher.h>
-#include <lobbyHandler.h>
 
 /*
 Host is responsible from constantly polling and distributing server events such as:
@@ -30,9 +26,6 @@ public:
 
 private:
 
-	LobbyHandler m_lobbyHandler;
-	PacketDispatcher m_dispatcher;
 	ENetAddress m_address;
 	ENetHost* m_server;
-	ClientDistributor m_distributor;
 };
