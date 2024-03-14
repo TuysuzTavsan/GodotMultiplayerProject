@@ -51,9 +51,6 @@
     <ClCompile Include="Src\handlerHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\handlerIDContainer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Src\ihandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

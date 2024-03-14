@@ -29,10 +29,24 @@ struct ClientInfo
 	~ClientInfo() = default;
 
 	//Copy constructor is now prohibited.
-	ClientInfo(const ClientInfo& other) = delete;
+	//ClientInfo(const ClientInfo& other) = delete;
+	ClientInfo(const ClientInfo& other)
+		:
+		m_clientID{other.m_clientID},
+		m_handlerID{other.m_handlerID}
+	{
+
+	}
 
 	//Copy assignment operator is prohibited.
-	ClientInfo& operator=(const ClientInfo& other) = delete;
+	//ClientInfo& operator=(const ClientInfo& other) = delete;
+	ClientInfo& operator=(const ClientInfo& other)
+	{
+		m_clientID = other.m_clientID;
+		m_handlerID = other.m_handlerID;
+
+		return *this;
+	}
 
 	//Move constructor
 	ClientInfo(ClientInfo&& other) noexcept

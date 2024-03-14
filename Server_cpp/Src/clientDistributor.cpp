@@ -60,7 +60,7 @@ void ClientDistributor::ReDistributePeer(ClientID& id, HandlerID& handlerID)
 	}
 
 	auto handler = HandlerHelper::GetSubscriber(handlerID);
-	handler.get().AddClient(std::ref(err.node.mapped()));
+	handler.get().AddClient(err.position->first, std::ref(err.position->second));
 
 }
 
@@ -98,7 +98,7 @@ void ClientDistributor::ReDistributePeer(ClientID& id, HandlerID&& handlerID)
 	}
 
 	auto handler = HandlerHelper::GetSubscriber(handlerID);
-	handler.get().AddClient(std::ref(err.node.mapped()));
+	handler.get().AddClient(err.position->first, std::ref(err.position->second));
 
 }
 
@@ -106,13 +106,21 @@ void ClientDistributor::RemoveDisconnectedPeer(ENetPeer* peer)
 {
 	std::scoped_lock lk(m_mut);
 
-	auto err = std::erase_if(m_clients,
+	auto err = std::find_if(m_clients.begin(), m_clients.end(),
 		[peer](auto& item) {return item.second.Get() == peer; }
 	);
 
-	if (err == 0) // Nothing is erased.
+	if (err->first.m_handlerID != HandlerID::unspecified)
 	{
-		throw std::exception("[EXCEPTION] Can not erase peer from unordered map.");
+		auto handler = HandlerHelper::GetSubscriber(err->first.m_handlerID);
+
+		handler.get().EraseClient(err->first);
 	}
+	
+
+	//if (err == 0) // Nothing is erased.
+	//{
+	//	throw std::exception("[EXCEPTION] Can not erase peer from unordered map.");
+	//}
 
 }

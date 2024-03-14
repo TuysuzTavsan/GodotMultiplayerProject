@@ -6,8 +6,8 @@
 #include <string>
 
 /*
-Clients are structures build on top of ENetPeer.
-It halso holds all related information about a client.
+Client is just a wrapper around ENetPeer*.
+Copy is prohibited.
 */
 
 typedef std::uint32_t ClientID;
@@ -33,8 +33,8 @@ public:
 	
 	bool operator==(const Client& other) const;
 
-	//Send_msg
-	void Send(const std::string& msg, std::uint8_t channel, const ENetPacketFlag& flag);
+	//Send packet.
+	void Send(const std::string& msg, const std::uint8_t& channel, const ENetPacketFlag& flag);
 
 	ENetPeer* Get();
 

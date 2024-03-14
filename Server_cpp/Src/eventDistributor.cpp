@@ -34,6 +34,8 @@ void EventDistributor::Handle(const ENetEvent& event)
 	case prot::Top::Distribute:
 		{
 			Locator::GetClientDistributor().ReDistributePeer(packet.m_id, static_cast<HandlerID>(packet.m_prot.m_subProt));
+			Client temp(event.peer);
+			temp.Send("FEEDBACK", 0, ENetPacketFlag::ENET_PACKET_FLAG_RELIABLE);
 
 			break;
 		}

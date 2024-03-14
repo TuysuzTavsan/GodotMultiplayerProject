@@ -1,9 +1,11 @@
 #pragma once
 
-#include <eventDistributor.h>
+
 #include <lobbyHandler.h>
+#include <eventDistributor.h>
 #include <packetDispatcher.h>
 #include <clientDistributor.h>
+#include <packetDispatcher.h>
 
 /*
 Service locator implementation taken from https://gameprogrammingpatterns.com/service-locator.html
@@ -25,6 +27,9 @@ public:
 	static void ProvideClientDistributor(IClientDistributor* clientDistributor);
 	static IClientDistributor& GetClientDistributor();
 
+	static void ProvidePacketDispatcher(IPacketDispatcher* packetDispatcher);
+	static IPacketDispatcher& GetPacketDispatcher();
+
 private:
 
 	Locator() = default;
@@ -38,4 +43,7 @@ private:
 
 	static NULLClientDistributor m_nullClientDistributor;
 	static IClientDistributor* m_clientDistributor;
+
+	static NULLPacketDispatcher m_nullPacketDispatcher;
+	static IPacketDispatcher* m_packetDispatcher;
 };

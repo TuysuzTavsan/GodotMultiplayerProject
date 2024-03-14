@@ -31,12 +31,10 @@ void IHandler::SetID(const HandlerID& id)
 		
 }
 
-void IHandler::AddClient(std::reference_wrapper<Client>&& client)
+void IHandler::AddClient(const ClientInfo& info, std::reference_wrapper<Client> client)
 {
 	//Check if already there.
-	auto it = std::find_if(m_clients.begin(), m_clients.end(), 
-		[&client](std::reference_wrapper<Client>& element) {return client.get() == element.get(); }
-	);
+	auto it = m_clients.find(info);
 
 	if (it != m_clients.end())
 	{
@@ -44,15 +42,13 @@ void IHandler::AddClient(std::reference_wrapper<Client>&& client)
 		throw std::exception("[EXCEPTION] Trying to add already existing client.");
 	}
 
-	m_clients.push_back(std::move(client));
+	m_clients.emplace(info, client);
 }
 
-void IHandler::EraseClient(std::reference_wrapper<Client>& client)
+void IHandler::EraseClient(const ClientInfo& info)
 {
 	//Check if exists.
-	auto it = std::find_if(m_clients.begin(), m_clients.end(),
-		[&client](std::reference_wrapper<Client>& element) {return client.get() == element.get(); }
-	);
+	auto it = m_clients.find(info);
 
 	if (it == m_clients.end())
 	{

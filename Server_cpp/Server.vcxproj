@@ -146,7 +146,6 @@
     <ClCompile Include="Src\client.cpp" />
     <ClCompile Include="Src\clientDistributor.cpp" />
     <ClCompile Include="Src\handlerHelper.cpp" />
-    <ClCompile Include="Src\handlerIDContainer.cpp" />
     <ClCompile Include="Src\host.cpp" />
     <ClCompile Include="Src\ihandler.cpp" />
     <ClCompile Include="Src\libHandler.cpp" />

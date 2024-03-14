@@ -9,7 +9,8 @@ Application::Application()
 	:
 	m_host{},
 	shouldRun{true},
-	controlThrd{&Application::controlApp, &*this, std::ref(this->shouldRun)}
+	controlThrd{&Application::controlApp, &*this, std::ref(this->shouldRun)},
+	dispatcherThrd{&PacketDispatcher::Dispatch, std::ref(m_packetDispatcher)}
 {
 
 }
@@ -30,6 +31,7 @@ bool Application::Init()
 	
 	Locator::Init();
 
+	Locator::ProvidePacketDispatcher(&m_packetDispatcher);
 	Locator::ProvideEventDistributor(&m_eventDistributor);
 	Locator::ProvideLobbyHandler(&m_lobbyHandler);
 	Locator::ProvideClientDistributor(&m_clientDistributor);
@@ -50,6 +52,7 @@ void Application::Run()
 void Application::Terminate()
 {
 	LibHandler::DeInit();
+	m_packetDispatcher.Terminate();
 }
 
 //TODO Make this thread awake at consistent intervals. SEARCH!

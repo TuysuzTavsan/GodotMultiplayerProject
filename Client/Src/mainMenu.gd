@@ -53,5 +53,6 @@ func _on_connect_to_server_pressed():
 		popup2.init("Connection Failed!", true, 0.0)
 		print("[ERROR] Can not establish connection!")
 		Client.Reset()
+		PacketDispatcher.Inactivate()
 		
 		connectButton.disabled = false

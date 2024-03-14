@@ -1,8 +1,9 @@
 #pragma once
 
 #include <handlerID.h>
+#include <clientInfo.h>
 #include <client.h>
-#include <vector>
+#include <map>
 #include <memory>
 
 /*
@@ -34,19 +35,19 @@ public:
 	void SetID(const HandlerID& id);
 
 	//Add client to the Handlers pool by reference.
-	void AddClient(std::reference_wrapper<Client>&& client);
+	void AddClient(const ClientInfo& info, std::reference_wrapper<Client> client);
 
 	//Remove client from the Handlers pool.
-	void EraseClient(std::reference_wrapper<Client>& client);
+	void EraseClient(const ClientInfo& info);
 
 	//Input incoming msg from responsible client.
-	void Input();
-	
+	void Input();	
+
 
 private:
 
 	bool m_sealed;  // flag to prevent from setting ID second time.
 	HandlerID m_id; // ID of the Handler
-	std::vector<std::reference_wrapper<Client>> m_clients; // Adopted client references.
+	std::map<ClientInfo, std::reference_wrapper<Client>> m_clients;
 
 };

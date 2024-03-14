@@ -25,6 +25,7 @@ func Inactivate() -> void:
 	m_shouldRun = false
 	m_mutex.unlock()
 	m_semaphore.post()
+	m_thread.wait_to_finish()
 
 func _exit_tree():
 	if(m_thread.is_alive()):

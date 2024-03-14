@@ -1,10 +1,13 @@
 #pragma once
 
-#include <host.h>
+
 #include <thread>
+
+#include <host.h>
 #include <eventDistributor.h>
-#include <lobbyHandler.h>
 #include <clientDistributor.h>
+#include <packetDispatcher.h>
+#include <lobbyHandler.h>
 
 /*
 Main Application struct.
@@ -32,6 +35,8 @@ private:
 	LobbyHandler m_lobbyHandler;
 	ClientDistributor m_clientDistributor;
 	EventDistributor m_eventDistributor;
+	PacketDispatcher m_packetDispatcher;
 	bool shouldRun;
 	std::jthread controlThrd; //TODO: change this to input controller thread.
+	std::jthread dispatcherThrd;
 };

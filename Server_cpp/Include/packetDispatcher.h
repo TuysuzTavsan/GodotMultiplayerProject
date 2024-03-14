@@ -1,11 +1,11 @@
 #pragma once
 
-#include <packet.h>
-
+#include <iostream>
 #include <vector>
 #include <mutex>
 #include <condition_variable>
 
+#include <packet.h>
 
 /*
 Top level responsible class from dispatching packet requests.
@@ -16,10 +16,40 @@ Other threads may safely request sending packages as this class guarentees threa
 //TODO Check if we are making another layer on top of ENetDispatch function.
 //Which is pointless anyway.
 
+class IPacketDispatcher
+{
+public:
+	IPacketDispatcher() = default;
+	virtual ~IPacketDispatcher() = default;
 
+	virtual void Dispatch() = 0;
+	virtual void PutPacket(PacketOut& packet) = 0;
+	virtual void PutPacket(PacketOut&& packet) = 0;
+};
 
+class NULLPacketDispatcher : public IPacketDispatcher
+{
+public:
+	NULLPacketDispatcher() = default;
+	~NULLPacketDispatcher() = default;
 
-class PacketDispatcher
+	void Dispatch() override
+	{
+		std::cout << "[NULLPacketDispatcher is provided]\n";
+	}
+
+	void PutPacket(PacketOut& packet) override
+	{
+		std::cout << "[NULLPacketDispatcher is provided]\n";
+	}
+
+	void PutPacket(PacketOut&& packet) override
+	{
+		std::cout << "[NULLPacketDispatcher is provided]\n";
+	}
+};
+
+class PacketDispatcher : public IPacketDispatcher
 {
 public:
 
@@ -33,13 +63,15 @@ public:
 	PacketDispatcher& operator=(const PacketDispatcher& other) = delete;
 
 	//Will dispatch packets in its own thread.
-	void Dispatch();
+	void Dispatch() override;
 
 	//Put packet to dispatch on the next iteration.
-	void PutPacket(PacketOut& packet);
+	void PutPacket(PacketOut& packet) override;
 
 	//Put packet to dispatch on the next iteration.
-	void PutPacket(PacketOut&& packet);
+	void PutPacket(PacketOut&& packet) override;
+
+	void Terminate();
 
 
 private:
@@ -48,4 +80,5 @@ private:
 	std::mutex m_mut;
 	std::vector<PacketOut> m_packetIn; //Packets to store packets.
 	std::vector<PacketOut> m_packetOut; //Packets to dispatch on next iteration.
+	bool m_shouldRun;
 };

@@ -38,7 +38,7 @@ func Poll() -> void:
 	
 	var eventType : ENetConnection.EventType = arr[0] 
 	var peer : ENetPacketPeer = arr[1]
-	var data = arr[2]
+	#var data  : String = arr[2].get_string_from_ascii()
 	var _channel : int = arr[3]
 	
 	
@@ -54,6 +54,7 @@ func Poll() -> void:
 			pass #TODO
 		m_client.EVENT_RECEIVE:
 			print("Received data is:")
+			var data  : String = peer.get_packet().get_string_from_ascii()
 			print(data)
 
 func ConnectServer() -> void:

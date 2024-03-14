@@ -5,6 +5,7 @@ void Locator::Init()
 	m_eventDistributor = &m_nullEventDistributor;
 	m_lobbyHandler = &m_nullLobbyHandler;
 	m_clientDistributor = &m_nullClientDistributor;
+	m_packetDispatcher = &m_nullPacketDispatcher;
 }
 
 void Locator::ProvideEventDistributor(IEventDistributor* eventDistributor)
@@ -62,6 +63,24 @@ IClientDistributor& Locator::GetClientDistributor()
 	return *m_clientDistributor;
 }
 
+void Locator::ProvidePacketDispatcher(IPacketDispatcher* packetDispatcher)
+{
+	if (!packetDispatcher)
+	{
+		//fall back to null service.
+		m_packetDispatcher = &m_nullPacketDispatcher;
+	}
+	else
+	{
+		m_packetDispatcher = packetDispatcher;
+	}
+}
+
+IPacketDispatcher& Locator::GetPacketDispatcher()
+{
+	return *m_packetDispatcher;
+}
+
 NULLEventDistributor Locator::m_nullEventDistributor;
 IEventDistributor* Locator::m_eventDistributor{ nullptr };
 
@@ -70,3 +89,6 @@ ILobbyHandler* Locator::m_lobbyHandler{ nullptr };
 
 NULLClientDistributor Locator::m_nullClientDistributor;
 IClientDistributor* Locator::m_clientDistributor{ nullptr };
+
+NULLPacketDispatcher Locator::m_nullPacketDispatcher;
+IPacketDispatcher* Locator::m_packetDispatcher{ nullptr };
