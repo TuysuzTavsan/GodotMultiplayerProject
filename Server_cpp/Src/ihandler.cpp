@@ -48,7 +48,10 @@ void IHandler::AddClient(const ClientInfo& info, std::reference_wrapper<Client> 
 void IHandler::EraseClient(const ClientInfo& info)
 {
 	//Check if exists.
-	auto it = m_clients.find(info);
+	//TODO change clientinfo with clientID.
+	auto it = std::find_if(m_clients.begin(), m_clients.end(),
+		[info](const auto& v) {return v.first.m_clientID == info.m_clientID; }
+	);
 
 	if (it == m_clients.end())
 	{

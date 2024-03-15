@@ -46,6 +46,13 @@ void ClientDistributor::ReDistributePeer(ClientID& id, HandlerID& handlerID)
 		throw std::exception("[EXCEPTION] Client already distributed to desired Handler.");
 	}
 
+	if (it->first.m_handlerID != HandlerID::unspecified)
+	{
+		auto removeHandler = HandlerHelper::GetSubscriber(it->first.m_handlerID);
+		removeHandler.get().EraseClient(it->first);
+	}
+	
+
 	//Extract, update key, emplace.
 	auto node = m_clients.extract(it);
 	//Change member of the key.
@@ -84,6 +91,12 @@ void ClientDistributor::ReDistributePeer(ClientID& id, HandlerID&& handlerID)
 		throw std::exception("[EXCEPTION] Client already distributed to desired Handler.");
 	}
 
+	if (it->first.m_handlerID != HandlerID::unspecified)
+	{
+		auto removeHandler = HandlerHelper::GetSubscriber(it->first.m_handlerID);
+		removeHandler.get().EraseClient(it->first);
+	}
+
 	//Extract, update key, emplace.
 	auto node = m_clients.extract(it);
 	//Change member of the key.
@@ -110,6 +123,11 @@ void ClientDistributor::RemoveDisconnectedPeer(ENetPeer* peer)
 		[peer](auto& item) {return item.second.Get() == peer; }
 	);
 
+	if (err == m_clients.end())
+	{
+		throw std::exception("[EXCEPTION] Can not find peer to remove.");
+	}
+
 	if (err->first.m_handlerID != HandlerID::unspecified)
 	{
 		auto handler = HandlerHelper::GetSubscriber(err->first.m_handlerID);
@@ -117,10 +135,6 @@ void ClientDistributor::RemoveDisconnectedPeer(ENetPeer* peer)
 		handler.get().EraseClient(err->first);
 	}
 	
-
-	//if (err == 0) // Nothing is erased.
-	//{
-	//	throw std::exception("[EXCEPTION] Can not erase peer from unordered map.");
-	//}
+	m_clients.erase(err);
 
 }

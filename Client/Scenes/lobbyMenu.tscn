@@ -1,4 +1,9 @@
-[gd_scene format=3 uid="uid://bolbou07gfpeg"]
+[gd_scene load_steps=5 format=3 uid="uid://bolbou07gfpeg"]
+
+[ext_resource type="Script" path="res://Src/lobbyMenu.gd" id="1_0v0pk"]
+[ext_resource type="StyleBox" uid="uid://dvs4ap0mdc3ut" path="res://Resources/button-normal.tres" id="1_a8gao"]
+[ext_resource type="StyleBox" uid="uid://b3fs8writruqt" path="res://Resources/button-hover.tres" id="2_sn1s7"]
+[ext_resource type="StyleBox" uid="uid://cku7nkflrk7k4" path="res://Resources/button-pressed.tres" id="3_y826s"]
 
 [node name="LobbyMenu" type="Control"]
 layout_mode = 3
@@ -7,6 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_0v0pk")
 
 [node name="Backgorund" type="ColorRect" parent="."]
 layout_mode = 1
@@ -20,24 +26,68 @@ color = Color(0.0980392, 0.0980392, 0.0980392, 1)
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.111
-anchor_top = 0.198
-anchor_right = 0.889
-anchor_bottom = 0.79
-offset_left = -127.872
-offset_top = -128.304
-offset_right = 127.872
-offset_bottom = 136.08
+anchor_left = 0.056
+anchor_top = 0.099
+anchor_right = 0.951
+anchor_bottom = 0.901
+offset_left = -0.512001
+offset_top = -0.152008
+offset_right = 0.447998
+offset_bottom = 0.151978
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.54902, 0.317647, 1)
 text = "Lobby List"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+text = "Lobby ID          Capacity/Players          Status"
+horizontal_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.83
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.54902, 0.317647, 1)
+text = "Create New Lobby"
+horizontal_alignment = 1
+
+[node name="LobbyName" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Lobby Name"
+alignment = 1
+
+[node name="CreateLobby" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("1_a8gao")
+theme_override_styles/hover = ExtResource("2_sn1s7")
+theme_override_styles/pressed = ExtResource("3_y826s")
+text = "Create Lobby"
+
+[node name="Return" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_styles/normal = ExtResource("1_a8gao")
+theme_override_styles/hover = ExtResource("2_sn1s7")
+theme_override_styles/pressed = ExtResource("3_y826s")
+text = "Return"
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/Return" to="." method="_on_return_pressed"]
