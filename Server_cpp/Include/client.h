@@ -39,8 +39,13 @@ public:
 	ENetPeer* Get();
 
 
+	void SetUserName(const std::string& name);
+
+	std::string GetName();
+
 private:
 
 	ENetPeer* m_peer;
+	std::string m_userName;
 
 };

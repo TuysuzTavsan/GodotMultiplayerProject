@@ -17,6 +17,8 @@ signal connection_error(peer : ENetPacketPeer)
 signal disconnected(peer : ENetPacketPeer)
 signal connectionResulted(type : ENetPacketPeer.PeerState)
 
+signal unhandledPacketReceived(packet : PacketIn)
+
 
 func _ready():
 	connected.connect(connected_to_server)
@@ -53,9 +55,10 @@ func Poll() -> void:
 		m_client.EVENT_NONE:
 			pass #TODO
 		m_client.EVENT_RECEIVE:
-			print("Received data is:")
-			var data  : String = peer.get_packet().get_string_from_ascii()
-			print(data)
+			var packet : PacketIn = PacketIn.new(peer.get_packet(), _channel)
+			if(!PacketHandler.ForwardPacket(packet)):
+				unhandledPacketReceived.emit(packet)
+
 
 func ConnectServer() -> void:
 	var error : Error = m_client.create_host(MAX_PLAYERS, CHANNELS)

@@ -138,3 +138,20 @@ void ClientDistributor::RemoveDisconnectedPeer(ENetPeer* peer)
 	m_clients.erase(err);
 
 }
+
+Client& ClientDistributor::GetClient(const ClientID& id)
+{
+	std::scoped_lock lk(m_mut);
+
+	auto it = std::find_if(m_clients.begin(), m_clients.end(),
+		[&id](const auto& pair) {return pair.first.m_clientID == id; }
+	);
+
+	if (it == m_clients.end())
+	{
+		//Couldnt find
+		throw std::exception("[EXCEPTION] Can not find peer to return a reference. see GetClient.");
+	}
+
+	return it->second;
+}

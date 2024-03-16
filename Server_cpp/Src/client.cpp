@@ -7,14 +7,16 @@
 
 Client::Client(ENetPeer* peer)
 	:
-	m_peer{ peer }
+	m_peer{ peer },
+	m_userName{}
 {
 
 }
 
 Client::Client(Client&& other) noexcept
 	:
-	m_peer{ std::move(other.m_peer) }
+	m_peer{ std::move(other.m_peer) },
+	m_userName{std::move(other.m_userName)}
 {
 
 }
@@ -27,6 +29,7 @@ Client::~Client()
 Client& Client::operator=(Client&& other) noexcept
 {
 	m_peer = std::move(other.m_peer);
+	m_userName = std::move(other.m_userName);
 
 	return *this;
 }
@@ -45,4 +48,14 @@ void Client::Send(const std::string& msg, const std::uint8_t& channel, const ENe
 ENetPeer* Client::Get()
 {
 	return m_peer;
+}
+
+void Client::SetUserName(const std::string& name)
+{
+	m_userName = name;
+}
+
+std::string Client::GetName()
+{
+	return m_userName;
 }

@@ -33,7 +33,7 @@ func _exit_tree():
 		m_semaphore.post()
 		m_thread.wait_to_finish()
 
-func PutPacket(pct : Packet) -> void:
+func PutPacket(pct : PacketOut) -> void:
 	m_mutex.lock()
 	
 	m_packetIn.push_back(pct)
@@ -60,7 +60,7 @@ func Dispatch() -> void:
 		m_mutex.unlock()
 		
 		# Send packets
-		for pct : Packet in m_packetOut:
+		for pct : PacketOut in m_packetOut:
 			Client.m_server.send(pct.m_channel, pct.m_data, pct.m_flags)
 		
 		m_packetOut.clear()

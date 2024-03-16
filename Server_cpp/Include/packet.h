@@ -13,6 +13,9 @@ struct PacketOut
 	std::uint8_t m_channel;
 
 	PacketOut();
+	PacketOut(ENetPeer* to_peer, const Protocol& prot, const std::string& data,
+		const std::uint32_t& flags, const std::uint8_t& channel);
+
 	PacketOut(ENetPeer* to_peer, const void* data, const size_t& length,
 		const std::uint32_t& flags, const std::uint8_t& channel);
 	~PacketOut();

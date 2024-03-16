@@ -10,6 +10,32 @@ PacketOut::PacketOut()
 
 }
 
+PacketOut::PacketOut(ENetPeer* to_peer, const Protocol& prot, const std::string& data,
+	const std::uint32_t& flags, const std::uint8_t& channel)
+	:
+	m_to{to_peer},
+	m_packet{nullptr},
+	m_channel{channel}
+{
+
+	std::string tempStr;
+
+	tempStr += "{";
+	tempStr += static_cast<char>(prot.m_topProt) + '0';
+	tempStr += "}";
+
+	tempStr += "{";
+	tempStr += static_cast<char>(prot.m_subProt) + '0';
+	tempStr += "}";
+
+	tempStr += "{";
+	tempStr += data;
+	tempStr += "}";
+
+	m_packet = enet_packet_create(tempStr.data(), data.length() + 8, flags);
+
+}
+
 PacketOut::PacketOut(ENetPeer* to_peer, const void* data, const size_t& length,
 	const std::uint32_t& flags, const std::uint8_t& channel)
 	:
@@ -82,11 +108,13 @@ PacketIn::PacketIn(ENetPeer* owner, const ClientID& id, void* data, const size_t
 	:
 	m_owner{owner},
 	m_id{id},
-	m_prot{},
-	m_data{reinterpret_cast<char*>(data)},
+	m_prot{data},
+	m_data{},
 	m_channel{channel}
 {
-	m_prot.Set(m_data);
+	const char* tempData = static_cast<char*>(data);
+	m_data.assign(tempData + 7, size - 8);
+	
 }
 
 PacketIn::~PacketIn()

@@ -1,10 +1,14 @@
-class_name Packet extends RefCounted
+class_name PacketOut extends RefCounted
 
 var m_channel : int = -1
 var m_data : PackedByteArray = []
 var m_flags : int = -1
 
 # var pct : Packet = Packet.new(channel, data, flag)
+
+func _init(channel : int, flags : int):
+	m_channel = channel
+	m_flags = flags
 
 func SetData(data : String, topProtocol : Prot.Top, subProtocol : int) -> void:
 	var m_str : String = ""
@@ -22,9 +26,7 @@ func SetData(data : String, topProtocol : Prot.Top, subProtocol : int) -> void:
 	
 	m_data = m_str.to_ascii_buffer()
 
-func _init(channel : int, flags : int):
-	m_channel = channel
-	m_flags = flags
+
 
 
 

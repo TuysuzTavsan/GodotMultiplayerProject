@@ -10,14 +10,23 @@ class_name Prot
 enum Top
 {
 	Unspecified,
+	User,
 	Distribute,
 	Lobby,
 }
 
+enum User
+{
+	UserNameSubmit
+}
+
 enum Lobby
 {
-	LobbyCreated
-}
+	LobbyCreated,
+	LobbyList,
+	LobbyJoin,
+	LobbyLeft
+};
 
 enum Distribute
 {

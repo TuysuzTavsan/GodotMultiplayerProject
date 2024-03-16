@@ -9,6 +9,6 @@ ClientDistributer will make use of this information to provide mechanism of dist
 enum class HandlerID
 {
 	unspecified,
-	lobby,
+	lobby
 };
 

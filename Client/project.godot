@@ -17,8 +17,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+PacketHandler="*res://Src/packetHandler.gd"
 SceneLoader="*res://Src/sceneLoader.gd"
 Client="*res://Src/client.gd"
+User="*res://Src/user.gd"
 PacketDispatcher="*res://Src/packetDispatcher.gd"
 
 [editor_plugins]

@@ -18,13 +18,22 @@ namespace prot
 	enum class Top
 	{
 		Unspecified,
+		User,
 		Distribute,
 		Lobby,
 	};
 
+	enum class User
+	{
+		UserNameSubmit
+	};
+
 	enum class Lobby
 	{
-		LobbyCreated
+		LobbyCreated,
+		LobbyList,
+		LobbyJoin,
+		LobbyLeft
 	};
 
 	using Distribute = HandlerID;
@@ -45,6 +54,14 @@ struct Protocol
 
 	}
 
+	Protocol(prot::Top topProt, std::uint8_t subProt)
+		:
+		m_topProt{ topProt },
+		m_subProt{ subProt }
+	{
+
+	}
+
 	Protocol(const std::string& data)
 		:
 		m_topProt{prot::Top::Unspecified},
@@ -54,6 +71,18 @@ struct Protocol
 		
 		m_topProt = static_cast<prot::Top>(data[1] - '0');
 		m_subProt = data[4] - '0';
+
+	}
+
+	Protocol(void* rawData)
+		:
+		m_topProt{prot::Top::Unspecified},
+		m_subProt{}
+	{
+		const char* tempData = static_cast<char*>(rawData);
+
+		m_topProt = static_cast<prot::Top>(tempData[1] - '0');
+		m_subProt = tempData[4] - '0';
 
 	}
 
