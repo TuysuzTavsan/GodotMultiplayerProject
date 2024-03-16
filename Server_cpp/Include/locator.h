@@ -7,11 +7,11 @@
 #include <clientDistributor.h>
 #include <packetDispatcher.h>
 
+
 /*
 Service locator implementation taken from https://gameprogrammingpatterns.com/service-locator.html
 Goal: provide easy access to application core structures without coupling or passing objects to constructor.
 */
-
 class Locator
 {
 public:

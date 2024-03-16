@@ -10,11 +10,8 @@ Static helper class to work with IHandler interface.
 IHandlers can subscribe to a handlerID enum with Subscribe, and can also unsubscribe.
 ClientDistributor will distribute peers with the help of this interface.
 
-if Lobby protocol says Distribute client to Lobby.
-ClientDistributor will forcefully redistribute that peer to lobbyHandler with this interface.
-For this to work LobbyHandler needs to Subscribe to Lobby enum of the HandlerID.
-
 Note: This implementation forces every IHandler to have only one HandlerID.
+This class is not thread safe.
 */
 
 class HandlerHelper

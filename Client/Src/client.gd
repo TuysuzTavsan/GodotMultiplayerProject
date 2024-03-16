@@ -56,6 +56,8 @@ func Poll() -> void:
 			pass #TODO
 		m_client.EVENT_RECEIVE:
 			var packet : PacketIn = PacketIn.new(peer.get_packet(), _channel)
+			print("Received Packet is:")
+			print(packet.m_data)
 			if(!PacketHandler.ForwardPacket(packet)):
 				unhandledPacketReceived.emit(packet)
 

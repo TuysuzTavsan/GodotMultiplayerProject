@@ -10,9 +10,8 @@
 Interface that every handler class derives from except libHandler.
 You can only set ID of this class once.
 Trying to set ID for the second time will result in throw.
-
+This class is not thread safe.
 */
-
 class IHandler
 {
 public:

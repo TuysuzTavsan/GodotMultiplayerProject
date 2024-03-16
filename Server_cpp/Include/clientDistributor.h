@@ -10,11 +10,9 @@
 #include <iostream>
 
 /*
-Responsible from distributing clients to network pipeline.
-Example: Every new client connection will be distributed to the lobbyHandler.
-Every client that is playing a game session will be distributed to the GameHandler's ownership.
-Every client that just entered lobby will be distributed to the lobby's ownership.
+Responsible from distributing clients to handlers via IHandler interface and HandlerHelper static class.
 Every call to this class is blocking. (protected by a mutex.)
+This class is thread safe.
 */
 
 class IClientDistributor

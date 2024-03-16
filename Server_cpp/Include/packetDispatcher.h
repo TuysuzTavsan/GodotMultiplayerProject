@@ -12,10 +12,6 @@ Top level responsible class from dispatching packet requests.
 This class will operate on its on thread.
 Other threads may safely request sending packages as this class guarentees thread safety.
 */
-
-//TODO Check if we are making another layer on top of ENetDispatch function.
-//Which is pointless anyway.
-
 class IPacketDispatcher
 {
 public:

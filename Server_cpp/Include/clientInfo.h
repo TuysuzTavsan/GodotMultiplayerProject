@@ -4,7 +4,10 @@
 #include <handlerID.h>
 
 
-
+/*
+Copyable ClientInformation structure.
+This struct is not thread safe.
+*/
 struct ClientInfo
 {
 	ClientID m_clientID;

@@ -22,14 +22,18 @@ func _on_return_button_pressed():
 	SceneLoader.Load("Scenes/mainMenu.tscn", true)
 
 func _on_connectbutton_pressed():
+	textEdit.shortcut_keys_enabled = false
 	connectButton.disabled = true
 	authenticate()
+	textEdit.shortcut_keys_enabled = true
 	connectButton.disabled = false
 
 func _on_text_edit_text_submitted(text):
 	textEdit.shortcut_keys_enabled = false
+	connectButton.disabled = true
 	authenticate()
 	textEdit.shortcut_keys_enabled = true
+	connectButton.disabled = false
 
 func authenticate():
 	var pckt : PacketOut = PacketOut.new(0, ENetPacketPeer.FLAG_RELIABLE)

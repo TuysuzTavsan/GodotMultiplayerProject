@@ -5,13 +5,16 @@
 #include <cstdint>
 #include <string>
 
-/*
-Client is just a wrapper around ENetPeer*.
-Copy is prohibited.
-*/
 
+
+//Type alias for identifying clients. This value will use ENetPeer.connectionID.
 typedef std::uint32_t ClientID;
 
+/*
+Client is just a wrapper around ENetPeer*. Copy is prohibited for this class.
+only ClientDistributor will hold original Client while others will use it by reference gathered from ClientDistrubuter.
+This class is not thread safe.
+*/
 class Client
 {
 public:

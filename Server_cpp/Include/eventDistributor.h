@@ -4,8 +4,9 @@
 
 
 /*
-Parser is the responsible class from parsing any type of incoming data from any peer.
-Parser will also interact withh clientDistributor.
+EventDistributor is the responsible class from parsing TopProtocol of incoming packets from any peer.
+It will forward packets depending on TopProtocol.
+This class is not thread safe.
 */
 
 class IEventDistributor

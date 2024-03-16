@@ -6,13 +6,14 @@
 #include <cstdint>
 
 
+
+//Type alias to set ID of a lobby.
+typedef std::uint16_t LobbyID;
+
 /*
 Lobby is a container with some helper functions to deal with lobby management.
 This structure is not thread safe.
 */
-
-typedef std::uint16_t LobbyID;
-
 class Lobby
 {
 public:

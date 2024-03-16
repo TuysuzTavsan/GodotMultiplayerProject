@@ -1,9 +1,9 @@
-#include <libHandler.h>
+#include <librarian.h>
 
 #include <enet/enet.h>
 #include <iostream>
 
-bool LibHandler::Init()
+bool Librarian::Init()
 {
     std::cout << "[Initializing libraries...]\n";
 
@@ -21,7 +21,7 @@ bool LibHandler::Init()
     return true;
 }
 
-void LibHandler::DeInit()
+void Librarian::DeInit()
 {
     std::cout << "[DeInitializing libraries...]\n";
     enet_deinitialize();

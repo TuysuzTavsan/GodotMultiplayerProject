@@ -4,15 +4,12 @@
 #include <handlerID.h>
 #include <string>
 
+
 /*
-
 FORMAT: {TopProtocol}{SubProtocol}{Data}
-
 TopProtocol will be used by the Parser to forward incoming packets.
 SubProtocol is meant to be used by the packet consumer class, example LobbyHandler.
-
 */
-
 namespace prot
 {
 	enum class Top
@@ -40,7 +37,10 @@ namespace prot
 }
 
 
-//Helper class to solve protocol of incoming packets.
+/*
+Helper class to solve protocol of incoming packets.
+This struct is meant to be used with PacketIn and PacketOut.
+*/
 struct Protocol
 {
 	prot::Top m_topProt;

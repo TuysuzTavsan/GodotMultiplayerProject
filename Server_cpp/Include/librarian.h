@@ -4,8 +4,9 @@
 Handles all 3rd party libraries.
 If any initialization fails during LibHandler.Init() it will return false, otherwise true.
 It will also deinitialize every 3rd party library when DeInitialize() called.
+This class is not thread safe.
 */
-class LibHandler
+class Librarian
 {
 public:
 
@@ -18,7 +19,7 @@ public:
 	/* Hide away constructor and destructor, No need for it. */
 private:
 
-	LibHandler() = default;
-	~LibHandler() = default;
+	Librarian() = default;
+	~Librarian() = default;
 
 };

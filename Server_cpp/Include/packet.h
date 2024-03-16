@@ -6,6 +6,11 @@
 #include <string>
 #include <cstdint>
 
+/*
+Essentially a ENetPacket wrapper with functions hidden away to send Packets.
+Copy is prohibited.
+Send method is designed to used by PacketDispatcher only but its not forced to do so.
+*/
 struct PacketOut
 {
 	ENetPeer* m_to;
@@ -36,6 +41,10 @@ struct PacketOut
 	int Send();
 };
 
+/*
+Struct to work easy with incoming packets.
+Copy is prohibited.
+*/
 struct PacketIn
 {
 	ENetPeer* m_owner;

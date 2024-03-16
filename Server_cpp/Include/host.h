@@ -5,6 +5,7 @@
 /*
 Host is responsible from constantly polling and distributing server events such as:
 Peer connected, peer disconnected, data received.
+This class is not thread safe.
 */
 class Host {
 public:

@@ -21,7 +21,7 @@
     <ClCompile Include="Src\host.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\libHandler.cpp">
+    <ClCompile Include="Src\librarian.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\clientDistributor.cpp">
@@ -65,7 +65,7 @@
     <ClInclude Include="Include\host.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\libHandler.h">
+    <ClInclude Include="Include\librarian.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\clientDistributor.h">

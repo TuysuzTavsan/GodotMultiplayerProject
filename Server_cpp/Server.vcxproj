@@ -148,7 +148,7 @@
     <ClCompile Include="Src\handlerHelper.cpp" />
     <ClCompile Include="Src\host.cpp" />
     <ClCompile Include="Src\ihandler.cpp" />
-    <ClCompile Include="Src\libHandler.cpp" />
+    <ClCompile Include="Src\librarian.cpp" />
     <ClCompile Include="Src\lobby.cpp" />
     <ClCompile Include="Src\lobbyHandler.cpp" />
     <ClCompile Include="Src\locator.cpp" />
@@ -173,7 +173,7 @@
     <ClInclude Include="Include\eventDistributor.h" />
     <ClInclude Include="Include\protocol.h" />
     <ClInclude Include="Include\host.h" />
-    <ClInclude Include="Include\libHandler.h" />
+    <ClInclude Include="Include\librarian.h" />
     <ClInclude Include="Include\servInfo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

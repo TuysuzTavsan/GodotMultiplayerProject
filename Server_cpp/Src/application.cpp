@@ -1,6 +1,6 @@
 #include <application.h>
 
-#include <libHandler.h>
+#include <librarian.h>
 #include <locator.h>
 #include <iostream>
 
@@ -22,7 +22,7 @@ Application::~Application()
 
 bool Application::Init()
 {
-	if (!LibHandler::Init())
+	if (!Librarian::Init())
 	{
 		return false;
 	}
@@ -51,7 +51,7 @@ void Application::Run()
 
 void Application::Terminate()
 {
-	LibHandler::DeInit();
+	Librarian::DeInit();
 	m_packetDispatcher.Terminate();
 }
 
