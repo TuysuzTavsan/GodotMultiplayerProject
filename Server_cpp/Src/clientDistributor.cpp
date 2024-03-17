@@ -115,7 +115,7 @@ void ClientDistributor::ReDistributePeer(ClientID& id, HandlerID&& handlerID)
 
 }
 
-void ClientDistributor::RemoveDisconnectedPeer(ENetPeer* peer)
+ClientID ClientDistributor::RemoveDisconnectedPeer(ENetPeer* peer)
 {
 	std::scoped_lock lk(m_mut);
 
@@ -135,8 +135,11 @@ void ClientDistributor::RemoveDisconnectedPeer(ENetPeer* peer)
 		handler.get().EraseClient(err->first);
 	}
 	
+	ClientID temp = err->first.m_clientID;
+
 	m_clients.erase(err);
 
+	return temp;
 }
 
 Client& ClientDistributor::GetClient(const ClientID& id)

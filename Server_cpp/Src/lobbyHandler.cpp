@@ -1,8 +1,31 @@
 #include <lobbyHandler.h>
 
-#include <stdexcept>
+#include <locator.h>
 
+#include <stdexcept>
 #include <iostream>
+
+
+void NULLLobbyHandler::Input(const PacketIn& packet)
+{
+	std::cout << "[NULLLobbyHandler is provided]\n";
+}
+
+void NULLLobbyHandler::FreshClientAdded(const ClientInfo& info, const std::reference_wrapper<Client>& client)
+{
+	std::cout << "[NULLLobbyHandler is provided]\n";
+}
+
+void NULLLobbyHandler::ClientErased(const ClientInfo& info, const std::reference_wrapper<Client>& client)
+{
+	std::cout << "[NULLLobbyHandler is provided]\n";
+}
+
+
+
+
+
+
 
 LobbyHandler::LobbyHandler()
 	:
@@ -17,21 +40,23 @@ LobbyHandler::~LobbyHandler()
 
 }
 
-void LobbyHandler::CreateLobby()
+void LobbyHandler::CreateLobby(const std::string& name)
 {
-	std::cout << "[SUCCESS] Created lobby!\n Total Lobbies:" << m_counter << " \n";
+	
 
 	if (m_counter == MAX_LOBBIES)
 	{
 		throw std::exception("[EXCEPTION] Reached max number of lobbies.");
 	}
 	
-	auto err = m_lobbies.emplace(m_counter++, Lobby());
+	auto err = m_lobbies.emplace(m_counter++, Lobby(name));
 
 	if (!err.second) // will return true if insertion happened, otherwise false.
 	{
 		throw std::exception("[EXCEPTION] Trying to emplace already existing lobby.");
 	}
+
+	std::cout << "[SUCCESS] Created lobby!\n Total Lobbies:" << m_counter << " \n";
 
 }
 
@@ -44,19 +69,55 @@ void LobbyHandler::EraseLobby(const LobbyID& id)
 	//TODO handle counter for erasing
 }
 
-void LobbyHandler::InputMsg(Protocol protocol, std::unique_ptr<char>&& data)
+void LobbyHandler::Input(const PacketIn& packet)
 {
-
-	prot::Lobby prot = static_cast<prot::Lobby>(protocol.m_subProt);
-
-	switch (prot)
+	switch (static_cast<prot::Lobby>(packet.m_prot.m_subProt))
 	{
-
 	case prot::Lobby::LobbyCreated:
-	
-		CreateLobby();
+	{
+		CreateLobby(packet.m_data);
+		break;
+	}
+	case prot::Lobby::LobbyJoin:
+	{
 
 		break;
 	}
+	case prot::Lobby::LobbyLeft:
+	{
+
+		break;
+	}
+	case prot::Lobby::LobbyList:
+	{
+		Protocol prot(prot::Top::Lobby, static_cast<uint8_t>(prot::Lobby::LobbyList));
+
+		std::string data;
+
+		for (auto it = m_lobbies.begin(); it != m_lobbies.end(); it++)
+		{
+			data += "{";
+			data += it->second.GetName();
+			data += "}";
+		}
+
+		PacketOut tempPacket(packet.m_owner, prot, data, ENET_PACKET_FLAG_RELIABLE, 0);
+		Locator::GetPacketDispatcher().PutPacket(tempPacket);
+
+		break;
+	}
+	}
+	
+}
+
+void LobbyHandler::FreshClientAdded(const ClientInfo& info, const std::reference_wrapper<Client>& client)
+{
+	Protocol prot(prot::Top::Distribute, static_cast<std::uint8_t>(prot::Distribute::lobby));
+	PacketOut out(client.get().Get(), prot, "", ENetPacketFlag::ENET_PACKET_FLAG_RELIABLE, 0);
+	Locator::GetPacketDispatcher().PutPacket(out);
+}
+
+void LobbyHandler::ClientErased(const ClientInfo& info, const std::reference_wrapper<Client>& client)
+{
 
 }

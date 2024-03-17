@@ -4,6 +4,7 @@
 
 #include <unordered_map>
 #include <cstdint>
+#include <string>
 
 
 
@@ -19,6 +20,7 @@ class Lobby
 public:
 
 	Lobby();
+	Lobby(const std::string& name);
 	~Lobby();
 	
 	//Move constructor.
@@ -36,6 +38,7 @@ public:
 	//Public method for handling lobby specific processes.
 	void HandleMsg();
 
+	std::string GetName();
 
 private:
 
@@ -44,4 +47,5 @@ private:
 	void EraseClient(ClientID id);
 
 	std::unordered_map<ClientID, Client> m_clients;
+	std::string m_name;
 };

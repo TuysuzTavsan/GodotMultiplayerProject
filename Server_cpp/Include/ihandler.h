@@ -3,8 +3,9 @@
 #include <handlerID.h>
 #include <clientInfo.h>
 #include <client.h>
+#include <packet.h>
+
 #include <map>
-#include <memory>
 
 /*
 Interface that every handler class derives from except libHandler.
@@ -40,10 +41,12 @@ public:
 	void EraseClient(const ClientInfo& info);
 
 	//Input incoming msg from responsible client.
-	void Input();	
-
+	virtual void Input(const PacketIn& packet) = 0;	
 
 private:
+
+	virtual void FreshClientAdded(const ClientInfo& info, const std::reference_wrapper<Client>& client) = 0;
+	virtual void ClientErased(const ClientInfo& info, const std::reference_wrapper<Client>& client) = 0;
 
 	bool m_sealed;  // flag to prevent from setting ID second time.
 	HandlerID m_id; // ID of the Handler

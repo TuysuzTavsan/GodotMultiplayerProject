@@ -37,7 +37,7 @@ void PacketDispatcher::Dispatch()
 		{
 			if (it->Send() == 0)
 			{
-				std::cout << "Successfully sended packet.\n";
+				//std::cout << "Successfully sended packet.\n";
 			}
 			else
 			{

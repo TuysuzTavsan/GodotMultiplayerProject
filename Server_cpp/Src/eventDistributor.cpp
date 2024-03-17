@@ -48,19 +48,12 @@ void EventDistributor::Handle(const ENetEvent& event)
 		{
 			Locator::GetClientDistributor().ReDistributePeer(packet.m_id, static_cast<HandlerID>(packet.m_prot.m_subProt));
 
-			Protocol prot(prot::Top::Distribute, static_cast<std::uint8_t>(prot::Distribute::lobby));
-			PacketOut out(event.peer, prot, "FEEDBACK", ENetPacketFlag::ENET_PACKET_FLAG_RELIABLE, 0);
-			Locator::GetPacketDispatcher().PutPacket(out);
-
-
-
 			break;
 		}
 
 	case prot::Top::Lobby:
 		
-		//Do this with IHandler and HandlerHelper to achieve complete interface feeling.
-		//Locator::GetLobbyHandler().InputMsg(_protocol, std::move(data));
+		Locator::GetLobbyHandler().Input(std::move(packet));
 
 		break;
 		

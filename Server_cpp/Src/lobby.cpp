@@ -3,13 +3,25 @@
 #include <utility>
 
 Lobby::Lobby()
+	:
+	m_clients{},
+	m_name{}
+{
+
+}
+
+Lobby::Lobby(const std::string& name)
+	:
+	m_clients{},
+	m_name{ name }
 {
 
 }
 
 Lobby::Lobby(Lobby&& other) noexcept
 	:
-	m_clients{std::move(other.m_clients)}
+	m_clients{std::move(other.m_clients)},
+	m_name{std::move(other.m_name)}
 {
 
 }
@@ -23,8 +35,14 @@ Lobby& Lobby::operator=(Lobby&& other) noexcept
 {
 
 	m_clients = std::move(other.m_clients);
+	m_name = std::move(other.m_name);
 
 	return *this;
+}
+
+std::string Lobby::GetName()
+{
+	return m_name;
 }
 
 void Lobby::InsertClient(ClientID id)

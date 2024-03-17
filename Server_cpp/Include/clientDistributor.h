@@ -25,7 +25,7 @@ public:
 	virtual void AddFreshPeer(ENetPeer* peer) = 0;
 	virtual void ReDistributePeer(ClientID& id, HandlerID& handlerID) = 0;
 	virtual void ReDistributePeer(ClientID& id, HandlerID&& handlerID) = 0;
-	virtual void RemoveDisconnectedPeer(ENetPeer* id) = 0;
+	virtual ClientID RemoveDisconnectedPeer(ENetPeer* id) = 0;
 	virtual Client& GetClient(const ClientID& id) = 0;
 
 };
@@ -53,17 +53,19 @@ public:
 		std::cout << "[NULLClientDistributor provided]\n";
 	}
 
-	void RemoveDisconnectedPeer(ENetPeer* id) override
+	ClientID RemoveDisconnectedPeer(ENetPeer* id) override
 	{
 		std::cout << "[NULLClientDistributor provided]\n";
+		return 0;
 	}
 
 	Client& GetClient(const ClientID& id) override
 	{
 		std::cout << "[NULLClientDistributor provided]\n";
-		
+	
 		Client* temp = nullptr;
 
+		//TODO fix nullptr
 		return *temp;
 	}
 
@@ -87,12 +89,10 @@ public:
 	void ReDistributePeer(ClientID& id, HandlerID&& handlerID) override;
 
 	//Remove a disconnected peer.
-	void RemoveDisconnectedPeer(ENetPeer* id) override;
+	ClientID RemoveDisconnectedPeer(ENetPeer* id) override;
 
 	//TODO CHANGE THIS
 	Client& GetClient(const ClientID& id) override;
-
-	//Get peer
 
 private:
 

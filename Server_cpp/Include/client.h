@@ -41,7 +41,6 @@ public:
 
 	ENetPeer* Get();
 
-
 	void SetUserName(const std::string& name);
 
 	std::string GetName();

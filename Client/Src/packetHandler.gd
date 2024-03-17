@@ -16,5 +16,5 @@ func ForwardPacket(packet : PacketIn) -> bool:
 		subscribers[packet.m_topProt].Handle(packet)
 		return true
 	else:
-		print("[INFORMATION] Unhandled packet received")
+		print("[INFO] Unhandled packet received")
 		return false

@@ -43,6 +43,7 @@ void IHandler::AddClient(const ClientInfo& info, std::reference_wrapper<Client> 
 	}
 
 	m_clients.emplace(info, client);
+	FreshClientAdded(info, client);
 }
 
 void IHandler::EraseClient(const ClientInfo& info)
@@ -59,5 +60,7 @@ void IHandler::EraseClient(const ClientInfo& info)
 		throw std::exception("[EXCEPTION] Trying to erase nonexisting client.");
 	}
 
+	ClientErased(it->first, it->second);
 	m_clients.erase(it);
+	
 }

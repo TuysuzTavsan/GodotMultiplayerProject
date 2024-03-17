@@ -1,6 +1,8 @@
 #pragma once
 
 #include <unordered_map>
+#include <iostream>
+#include <string>
 
 #include <lobby.h>
 #include <protocol.h>
@@ -12,26 +14,27 @@ Mostly it will operate with lobby helper functions rather then doing things itse
 This structure is thread safe?
 */
 
-class ILobbyHandler
+class ILobbyHandler : public IHandler
 {
 public:
 
 	~ILobbyHandler() {}
-
-	virtual void InputMsg(Protocol protocol, std::unique_ptr<char>&& data) = 0;
 };
 
 class NULLLobbyHandler : public ILobbyHandler
 {
 public:
 
-	void InputMsg(Protocol protocol, std::unique_ptr<char>&& data) override
-	{
-		//do nothing.
-	}
+	void Input(const PacketIn& packet)  override;
+
+private:
+
+	void FreshClientAdded(const ClientInfo& info, const std::reference_wrapper<Client>& client) override;
+	void ClientErased(const ClientInfo& info, const std::reference_wrapper<Client>& client) override;
+	
 };
 
-class LobbyHandler : public ILobbyHandler, public IHandler
+class LobbyHandler : public ILobbyHandler
 {
 public:
 
@@ -45,11 +48,15 @@ public:
 	LobbyHandler& operator=(const LobbyHandler& other) = delete;
 
 	//Forwarding msg from external source needs public method here.
-	void InputMsg(Protocol protocol, std::unique_ptr<char>&& data) override;
+	void Input(const PacketIn& packet) override;
 
 private:
+	
+	void FreshClientAdded(const ClientInfo& info, const std::reference_wrapper<Client>& client) override;
+	void ClientErased(const ClientInfo& info, const std::reference_wrapper<Client>& client) override;
 
-	void CreateLobby();
+
+	void CreateLobby(const std::string& name);
 
 	void EraseLobby(const LobbyID& id);
 

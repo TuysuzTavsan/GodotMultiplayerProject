@@ -55,7 +55,7 @@ void Host::PollEvents()
         switch (_event.type)
         {
         case ENET_EVENT_TYPE_CONNECT:
-            printf("A new client connected from %x:%u.\n",
+            printf("[INFO] New client connected from %x:%u.\n",
                 _event.peer->address.host,
                 _event.peer->address.port);
 
@@ -77,7 +77,7 @@ void Host::PollEvents()
 
         case ENET_EVENT_TYPE_RECEIVE:
 
-            std::cout << "A packet of length: " << _event.packet->dataLength << " received from peerID: " << 
+            std::cout << "[INFO] Packet of length: " << _event.packet->dataLength << " received from peerID: " << 
                 _event.peer->connectID<< " on channel: "
                 << (unsigned)_event.channelID << ".\n";
 
@@ -111,9 +111,9 @@ void Host::PollEvents()
 
         case ENET_EVENT_TYPE_DISCONNECT:
 
-            std::cout << _event.peer->connectID << " disconnected.\n";
+            ClientID id = Locator::GetClientDistributor().RemoveDisconnectedPeer(_event.peer);
 
-            Locator::GetClientDistributor().RemoveDisconnectedPeer(_event.peer);
+            std::cout << "[INFO] Client with ID# " << id << " disconnected.\n";
 
 
             /* Reset the peer's client information. */
