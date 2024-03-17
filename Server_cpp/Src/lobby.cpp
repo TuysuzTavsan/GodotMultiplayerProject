@@ -1,19 +1,24 @@
 #include <lobby.h>
 
 #include <utility>
+#include <locator.h>
 
 Lobby::Lobby()
 	:
 	m_clients{},
-	m_name{}
+	m_name{},
+	m_capacity{0},
+	m_isSealed{false}
 {
 
 }
 
-Lobby::Lobby(const std::string& name)
+Lobby::Lobby(const std::string& name, const std::uint8_t& capacity)
 	:
 	m_clients{},
-	m_name{ name }
+	m_name{ name },
+	m_capacity{capacity},
+	m_isSealed{false}
 {
 
 }
@@ -21,7 +26,9 @@ Lobby::Lobby(const std::string& name)
 Lobby::Lobby(Lobby&& other) noexcept
 	:
 	m_clients{std::move(other.m_clients)},
-	m_name{std::move(other.m_name)}
+	m_name{std::move(other.m_name)},
+	m_capacity{std::move(other.m_capacity)},
+	m_isSealed{std::move(other.m_isSealed)}
 {
 
 }
@@ -36,8 +43,15 @@ Lobby& Lobby::operator=(Lobby&& other) noexcept
 
 	m_clients = std::move(other.m_clients);
 	m_name = std::move(other.m_name);
+	m_capacity = std::move(other.m_capacity);
+	m_isSealed = std::move(other.m_isSealed);
 
 	return *this;
+}
+
+LobbyInfo Lobby::GetInfo()
+{
+	return LobbyInfo(m_name, m_capacity, m_clients.size(), m_isSealed);
 }
 
 std::string Lobby::GetName()
@@ -47,11 +61,14 @@ std::string Lobby::GetName()
 
 void Lobby::InsertClient(ClientID id)
 {
-	//ClientDistributor::GetClient
-	Client client(nullptr);
-	//TODO
+	if (m_clients.size() >= m_capacity)
+	{
+		throw std::exception("[EXCEPTION] Lobby max capacity already reached.");
+	}
 
-	auto err = m_clients.emplace(id, std::move(client));
+	Client& client = Locator::GetClientDistributor().GetClient(id);
+
+	auto err = m_clients.emplace(id, std::ref(client));
 
 	if (!err.second) // will return true if insertion happened, otherwise false.
 	{

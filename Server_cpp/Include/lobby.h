@@ -1,8 +1,9 @@
 #pragma once
 
 #include <client.h>
+#include <lobbyInfo.h>
 
-#include <unordered_map>
+#include <map>
 #include <cstdint>
 #include <string>
 
@@ -20,7 +21,7 @@ class Lobby
 public:
 
 	Lobby();
-	Lobby(const std::string& name);
+	Lobby(const std::string& name, const std::uint8_t& capacity);
 	~Lobby();
 	
 	//Move constructor.
@@ -38,6 +39,8 @@ public:
 	//Public method for handling lobby specific processes.
 	void HandleMsg();
 
+	LobbyInfo GetInfo();
+
 	std::string GetName();
 
 private:
@@ -46,6 +49,8 @@ private:
 
 	void EraseClient(ClientID id);
 
-	std::unordered_map<ClientID, Client> m_clients;
+	std::map<ClientID, std::reference_wrapper<Client>> m_clients;
 	std::string m_name;
+	std::uint8_t m_capacity;
+	bool m_isSealed;
 };

@@ -56,7 +56,7 @@ private:
 	void ClientErased(const ClientInfo& info, const std::reference_wrapper<Client>& client) override;
 
 
-	void CreateLobby(const std::string& name);
+	void CreateLobby(const std::string& name, const std::uint8_t& capacity);
 
 	void EraseLobby(const LobbyID& id);
 

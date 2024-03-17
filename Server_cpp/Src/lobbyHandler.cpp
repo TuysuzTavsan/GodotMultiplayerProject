@@ -40,7 +40,7 @@ LobbyHandler::~LobbyHandler()
 
 }
 
-void LobbyHandler::CreateLobby(const std::string& name)
+void LobbyHandler::CreateLobby(const std::string& name, const std::uint8_t& capacity)
 {
 	
 
@@ -49,7 +49,7 @@ void LobbyHandler::CreateLobby(const std::string& name)
 		throw std::exception("[EXCEPTION] Reached max number of lobbies.");
 	}
 	
-	auto err = m_lobbies.emplace(m_counter++, Lobby(name));
+	auto err = m_lobbies.emplace(m_counter++, Lobby(name, capacity));
 
 	if (!err.second) // will return true if insertion happened, otherwise false.
 	{
@@ -75,7 +75,17 @@ void LobbyHandler::Input(const PacketIn& packet)
 	{
 	case prot::Lobby::LobbyCreated:
 	{
-		CreateLobby(packet.m_data);
+		//{name}{capacity}
+
+		int size = packet.m_data.size();
+		int nameEndPos = packet.m_data.find_first_of('}', 0);
+
+		std::string lobbyName = packet.m_data.substr(1, nameEndPos - 1);
+		
+		int capacity = packet.m_data[nameEndPos + 2] - '0';
+
+
+		CreateLobby(lobbyName, capacity);
 		break;
 	}
 	case prot::Lobby::LobbyJoin:
@@ -96,8 +106,22 @@ void LobbyHandler::Input(const PacketIn& packet)
 
 		for (auto it = m_lobbies.begin(); it != m_lobbies.end(); it++)
 		{
+			LobbyInfo info = it->second.GetInfo();
+
 			data += "{";
-			data += it->second.GetName();
+			data += info.m_name;
+			data += "}";
+			
+			data += "{";
+			data += (char)info.m_playerCount + '0';
+			data += "}";
+
+			data += "{";
+			data += (char)info.m_capacity + '0';
+			data += "}";
+
+			data += "{";
+			data += (char)info.m_isSealed + '0';
 			data += "}";
 		}
 

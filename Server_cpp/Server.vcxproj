@@ -151,6 +151,7 @@
     <ClCompile Include="Src\librarian.cpp" />
     <ClCompile Include="Src\lobby.cpp" />
     <ClCompile Include="Src\lobbyHandler.cpp" />
+    <ClCompile Include="Src\lobbyInfo.cpp" />
     <ClCompile Include="Src\locator.cpp" />
     <ClCompile Include="Src\main.cpp" />
     <ClCompile Include="Src\packet.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Include\ihandler.h" />
     <ClInclude Include="Include\lobby.h" />
     <ClInclude Include="Include\lobbyHandler.h" />
+    <ClInclude Include="Include\lobbyInfo.h" />
     <ClInclude Include="Include\locator.h" />
     <ClInclude Include="Include\packet.h" />
     <ClInclude Include="Include\packetDispatcher.h" />
