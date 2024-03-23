@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://bolbou07gfpeg"]
 
 [ext_resource type="Script" path="res://Src/lobbyMenu.gd" id="1_0v0pk"]
-[ext_resource type="StyleBox" uid="uid://dvs4ap0mdc3ut" path="res://Resources/button-normal.tres" id="1_a8gao"]
-[ext_resource type="StyleBox" uid="uid://b3fs8writruqt" path="res://Resources/button-hover.tres" id="2_sn1s7"]
-[ext_resource type="StyleBox" uid="uid://cku7nkflrk7k4" path="res://Resources/button-pressed.tres" id="3_y826s"]
+[ext_resource type="StyleBox" uid="uid://dvs4ap0mdc3ut" path="res://Resources/Prototype/button-normal.tres" id="1_a8gao"]
+[ext_resource type="StyleBox" uid="uid://b3fs8writruqt" path="res://Resources/Prototype/button-hover.tres" id="2_sn1s7"]
+[ext_resource type="StyleBox" uid="uid://cku7nkflrk7k4" path="res://Resources/Prototype/button-pressed.tres" id="3_y826s"]
 
 [node name="LobbyMenu" type="Control"]
 layout_mode = 3

@@ -2,17 +2,18 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2gib2ycmpe6y"
-path.bptc="res://.godot/imported/kloppenheim_06_puresky_4k.exr-2e57cc6efcfe27ff53199041d5e26f28.bptc.ctex"
+uid="uid://dischnbw5y7wy"
+path.s3tc="res://.godot/imported/fox_Diffuse.png-f08045c28571d2f75c915e8b677818e1.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={}
 
 [deps]
 
-source_file="res://Resources/kloppenheim_06_puresky_4k.exr"
-dest_files=["res://.godot/imported/kloppenheim_06_puresky_4k.exr-2e57cc6efcfe27ff53199041d5e26f28.bptc.ctex"]
+source_file="res://Resources/Prototype/fox_Diffuse.png"
+dest_files=["res://.godot/imported/fox_Diffuse.png-f08045c28571d2f75c915e8b677818e1.s3tc.ctex"]
 
 [params]
 

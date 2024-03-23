@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://do3eu2skdw8iy"]
 
-[ext_resource type="StyleBox" uid="uid://dvs4ap0mdc3ut" path="res://Resources/button-normal.tres" id="1_ix67h"]
-[ext_resource type="StyleBox" uid="uid://b3fs8writruqt" path="res://Resources/button-hover.tres" id="2_4npvd"]
-[ext_resource type="StyleBox" uid="uid://cku7nkflrk7k4" path="res://Resources/button-pressed.tres" id="3_rcfjm"]
+[ext_resource type="StyleBox" uid="uid://dvs4ap0mdc3ut" path="res://Resources/Prototype/button-normal.tres" id="1_ix67h"]
+[ext_resource type="StyleBox" uid="uid://b3fs8writruqt" path="res://Resources/Prototype/button-hover.tres" id="2_4npvd"]
+[ext_resource type="StyleBox" uid="uid://cku7nkflrk7k4" path="res://Resources/Prototype/button-pressed.tres" id="3_rcfjm"]
 
 [node name="DefaultLobbyHBox" type="HBoxContainer"]
 

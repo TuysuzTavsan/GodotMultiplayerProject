@@ -1,10 +1,10 @@
 [gd_scene load_steps=22 format=3 uid="uid://diac80koytkwb"]
 
-[ext_resource type="Texture2D" uid="uid://b2gib2ycmpe6y" path="res://Resources/kloppenheim_06_puresky_4k.exr" id="1_lg2hn"]
+[ext_resource type="Texture2D" uid="uid://b2gib2ycmpe6y" path="res://Resources/Prototype/kloppenheim_06_puresky_4k.exr" id="1_lg2hn"]
 [ext_resource type="Texture2D" uid="uid://y8lyn2jevn2q" path="res://Resources/kenney_prototype_textures/dark/texture_04.png" id="2_tmv51"]
-[ext_resource type="PackedScene" uid="uid://nqxqm4bimr7y" path="res://Scenes/player.tscn" id="3_i6ys3"]
 [ext_resource type="Texture2D" uid="uid://dmcoi5e05258g" path="res://Resources/kenney_prototype_textures/orange/texture_04.png" id="4_3ak3k"]
 [ext_resource type="Texture2D" uid="uid://cv6tylmm1nj17" path="res://Resources/kenney_prototype_textures/green/texture_04.png" id="5_vxjya"]
+[ext_resource type="Script" path="res://Src/camera.gd" id="6_rg5ur"]
 
 [sub_resource type="GDScript" id="GDScript_7520p"]
 script/source = "extends Node3D
@@ -87,9 +87,6 @@ shape = SubResource("BoxShape3D_1lyvt")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Plane"]
 mesh = SubResource("PlaneMesh_bx37r")
 
-[node name="player" parent="." instance=ExtResource("3_i6ys3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
 [node name="Box" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.6402, 1.57215, 0)
 collision_mask = 3
@@ -118,3 +115,10 @@ shape = SubResource("CylinderShape3D_kv3ek")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Box2"]
 mesh = SubResource("CylinderMesh_s7qo1")
+
+[node name="cameraPivot" type="Node3D" parent="."]
+script = ExtResource("6_rg5ur")
+
+[node name="Camera3D" type="Camera3D" parent="cameraPivot"]
+transform = Transform3D(-1, 6.18172e-08, -6.18172e-08, 0, 0.707107, 0.707107, 8.74228e-08, 0.707107, -0.707107, 0, 16, -12)
+current = true
