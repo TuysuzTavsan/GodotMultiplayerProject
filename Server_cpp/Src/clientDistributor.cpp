@@ -21,7 +21,7 @@ void ClientDistributor::AddFreshPeer(ENetPeer* peer)
 
 	if (err.second == false)
 	{
-		throw std::exception("[EXCEPTION] Can not emplace fresh peer to unordered map.");
+		throw std::logic_error("[EXCEPTION] Can not emplace fresh peer to unordered map.");
 	}
 
 }
@@ -37,13 +37,13 @@ void ClientDistributor::ReDistributePeer(ClientID& id, HandlerID& handlerID)
 	if (it == m_clients.end())
 	{
 		//Couldnt find
-		throw std::exception("[EXCEPTION] Can not find peer to redistribute.");
+		throw std::logic_error("[EXCEPTION] Can not find peer to redistribute.");
 	}
 
 	if (it->first.m_handlerID == handlerID)
 	{
 		//Already there.
-		throw std::exception("[EXCEPTION] Client already distributed to desired Handler.");
+		throw std::logic_error("[EXCEPTION] Client already distributed to desired Handler.");
 	}
 
 	if (it->first.m_handlerID != HandlerID::unspecified)
@@ -63,7 +63,7 @@ void ClientDistributor::ReDistributePeer(ClientID& id, HandlerID& handlerID)
 	if (!err.inserted) 
 	{
 		//emplace did not happen.
-		throw std::exception("[EXCEPTION] Can not emplace redistributed peer.");
+		throw std::logic_error("[EXCEPTION] Can not emplace redistributed peer.");
 	}
 
 	auto handler = HandlerHelper::GetSubscriber(handlerID);
@@ -82,13 +82,13 @@ void ClientDistributor::ReDistributePeer(ClientID& id, HandlerID&& handlerID)
 	if (it == m_clients.end())
 	{
 		//Couldnt find
-		throw std::exception("[EXCEPTION] Can not find peer to redistribute.");
+		throw std::logic_error("[EXCEPTION] Can not find peer to redistribute.");
 	}
 
 	if (it->first.m_handlerID == handlerID)
 	{
 		//Already there.
-		throw std::exception("[EXCEPTION] Client already distributed to desired Handler.");
+		throw std::logic_error("[EXCEPTION] Client already distributed to desired Handler.");
 	}
 
 	if (it->first.m_handlerID != HandlerID::unspecified)
@@ -107,7 +107,7 @@ void ClientDistributor::ReDistributePeer(ClientID& id, HandlerID&& handlerID)
 	if (!err.inserted)
 	{
 		//emplace did not happen.
-		throw std::exception("[EXCEPTION] Can not emplace redistributed peer.");
+		throw std::logic_error("[EXCEPTION] Can not emplace redistributed peer.");
 	}
 
 	auto handler = HandlerHelper::GetSubscriber(handlerID);
@@ -125,7 +125,7 @@ ClientID ClientDistributor::RemoveDisconnectedPeer(ENetPeer* peer)
 
 	if (err == m_clients.end())
 	{
-		throw std::exception("[EXCEPTION] Can not find peer to remove.");
+		throw std::logic_error("[EXCEPTION] Can not find peer to remove.");
 	}
 
 	if (err->first.m_handlerID != HandlerID::unspecified)
@@ -153,7 +153,7 @@ Client& ClientDistributor::GetClient(const ClientID& id)
 	if (it == m_clients.end())
 	{
 		//Couldnt find
-		throw std::exception("[EXCEPTION] Can not find peer to return a reference. see GetClient.");
+		throw std::logic_error("[EXCEPTION] Can not find peer to return a reference. see GetClient.");
 	}
 
 	return it->second;

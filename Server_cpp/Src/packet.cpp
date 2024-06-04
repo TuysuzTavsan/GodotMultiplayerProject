@@ -45,7 +45,7 @@ PacketOut::PacketOut(ENetPeer* to_peer, const void* data, const size_t& length,
 {
 	if (!m_packet) //ENet Couldnt create packet.
 	{
-		throw std::exception("[EXCEPTION] ENet Couldnt create packet.");
+		throw std::logic_error("[EXCEPTION] ENet Couldnt create packet.");
 	}
 }
 

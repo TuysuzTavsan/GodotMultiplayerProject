@@ -46,14 +46,14 @@ void LobbyHandler::CreateLobby(const std::string& name, const std::uint8_t& capa
 
 	if (m_counter == MAX_LOBBIES)
 	{
-		throw std::exception("[EXCEPTION] Reached max number of lobbies.");
+		throw std::logic_error("[EXCEPTION] Reached max number of lobbies.");
 	}
 	
 	auto err = m_lobbies.emplace(m_counter++, Lobby(name, capacity));
 
 	if (!err.second) // will return true if insertion happened, otherwise false.
 	{
-		throw std::exception("[EXCEPTION] Trying to emplace already existing lobby.");
+		throw std::logic_error("[EXCEPTION] Trying to emplace already existing lobby.");
 	}
 
 	std::cout << "[SUCCESS] Created lobby!\n Total Lobbies:" << m_counter << " \n";
@@ -64,7 +64,7 @@ void LobbyHandler::EraseLobby(const LobbyID& id)
 {
 	if (!m_lobbies.erase(id)) // will return 0 if nothing removed. 1 if removed.
 	{
-		throw std::exception("[EXCEPTION] Trying to erase unexisting lobby.");
+		throw std::logic_error("[EXCEPTION] Trying to erase unexisting lobby.");
 	}
 	//TODO handle counter for erasing
 }

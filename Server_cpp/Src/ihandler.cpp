@@ -26,7 +26,7 @@ void IHandler::SetID(const HandlerID& id)
 	}
 	else
 	{
-		throw std::exception("[EXCEPTION] Trying to setID of the IHandler for second time.");
+		throw std::logic_error("[EXCEPTION] Trying to setID of the IHandler for second time.");
 	}
 		
 }
@@ -39,7 +39,7 @@ void IHandler::AddClient(const ClientInfo& info, std::reference_wrapper<Client> 
 	if (it != m_clients.end())
 	{
 		//Already exists.
-		throw std::exception("[EXCEPTION] Trying to add already existing client.");
+		throw std::logic_error("[EXCEPTION] Trying to add already existing client.");
 	}
 
 	m_clients.emplace(info, client);
@@ -57,7 +57,7 @@ void IHandler::EraseClient(const ClientInfo& info)
 	if (it == m_clients.end())
 	{
 		//Cant find
-		throw std::exception("[EXCEPTION] Trying to erase nonexisting client.");
+		throw std::logic_error("[EXCEPTION] Trying to erase nonexisting client.");
 	}
 
 	ClientErased(it->first, it->second);

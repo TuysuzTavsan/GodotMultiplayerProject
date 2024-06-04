@@ -37,7 +37,7 @@ void Host::CreateServer()
     if (m_server == NULL)
     {
         std::cout << "[ERROR] Failed to create host on Port: " << (unsigned)servinfo::PORT << "\n";
-        throw std::exception("[EXCEPTION] Failed to create host.");
+        throw std::logic_error("[EXCEPTION] Failed to create host.");
     }
 
     //log success.

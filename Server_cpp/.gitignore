@@ -1,5 +1,5 @@
-*.obj
-Debug/
-Release/
-.vs/
-x64/
+# ignore all .a files
+*.exe
+
+# ignore all files in any directory named build
+build/

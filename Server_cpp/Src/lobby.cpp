@@ -63,7 +63,7 @@ void Lobby::InsertClient(ClientID id)
 {
 	if (m_clients.size() >= m_capacity)
 	{
-		throw std::exception("[EXCEPTION] Lobby max capacity already reached.");
+		throw std::logic_error("[EXCEPTION] Lobby max capacity already reached.");
 	}
 
 	Client& client = Locator::GetClientDistributor().GetClient(id);
@@ -72,7 +72,7 @@ void Lobby::InsertClient(ClientID id)
 
 	if (!err.second) // will return true if insertion happened, otherwise false.
 	{
-		throw std::exception("[EXCEPTION] Trying to emplace already existing peer to lobby.");
+		throw std::logic_error("[EXCEPTION] Trying to emplace already existing peer to lobby.");
 	}
 
 }
@@ -81,7 +81,7 @@ void Lobby::EraseClient(ClientID id)
 {
 	if (!m_clients.erase(id)) // will return 0 if nothing removed. 1 if removed.
 	{
-		throw std::exception("[EXCEPTION] Trying to erase non existing client from lobby.");
+		throw std::logic_error("[EXCEPTION] Trying to erase non existing client from lobby.");
 	}
 
 }

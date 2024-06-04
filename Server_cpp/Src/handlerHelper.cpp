@@ -11,7 +11,7 @@ void HandlerHelper::Subscribe(IHandler& handler)
 	if (temp != m_handlers.end())
 	{
 		//Already subscribed.
-		throw std::exception("[EXCEPTION] IHandler already subscribed");
+		throw std::logic_error("[EXCEPTION] IHandler already subscribed");
 	}
 
 	m_handlers.emplace(handler.GetID(), std::ref(handler));
@@ -24,7 +24,7 @@ void HandlerHelper::Unsubscribe(IHandler& handler)
 
 	if (temp == m_handlers.end())
 	{
-		throw std::exception("[EXCEPTION] Trying to remove unexisting IHandler.");
+		throw std::logic_error("[EXCEPTION] Trying to remove unexisting IHandler.");
 	}
 
 	m_handlers.erase(temp);
@@ -36,7 +36,7 @@ std::reference_wrapper<IHandler> HandlerHelper::GetSubscriber(const HandlerID& i
 
 	if (temp == m_handlers.end())
 	{
-		throw std::exception("[EXCEPTION] Trying to get unsubscribed IHandler.");
+		throw std::logic_error("[EXCEPTION] Trying to get unsubscribed IHandler.");
 	}
 
 	return std::ref(temp->second);
@@ -48,7 +48,7 @@ std::reference_wrapper<IHandler> HandlerHelper::GetSubscriber(const HandlerID&& 
 
 	if (temp == m_handlers.end())
 	{
-		throw std::exception("[EXCEPTION] Trying to get unsubscribed IHandler.");
+		throw std::logic_error("[EXCEPTION] Trying to get unsubscribed IHandler.");
 	}
 
 	return std::ref(temp->second);
